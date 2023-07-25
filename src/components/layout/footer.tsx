@@ -1,3 +1,5 @@
+import React from 'react'
+
 function GitHubIcon(props) {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
@@ -10,9 +12,15 @@ function GitHubIcon(props) {
   )
 }
 
-function SocialLink({ to, icon: Icon, children }) {
+type SocialLinkProps = {
+  to: string
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  children: React.ReactNode
+}
+
+function SocialLink({ to, icon: Icon, children }: SocialLinkProps) {
   return (
-    <a to={to} className="group cursor-pointer" target="_blank">
+    <a href={to} className="group cursor-pointer" target="_blank">
       <span className="sr-only">{children}</span>
       <Icon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
     </a>
@@ -21,7 +29,7 @@ function SocialLink({ to, icon: Icon, children }) {
 
 export default function Footer() {
   return (
-    <footer className="mx-auto max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
+    <footer className="mx-auto max-w-2xl space-y-10 pb-6 lg:max-w-5xl">
 
       <div className="flex flex-col items-center justify-between gap-5 border-t border-zinc-900/5 pt-8 dark:border-white/5 sm:flex-row">
         <p className="text-xs text-zinc-600 dark:text-zinc-400">

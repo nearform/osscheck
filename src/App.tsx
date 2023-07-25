@@ -1,9 +1,11 @@
-import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Layout from '@/components/layout/layout'
 import HomeRoute from './routes/home'
 import IntroductionRoute from './routes/introduction'
 import DocumentationRoute from './routes/documentation'
+import RepoRoute from './routes/repo'
 
 export default function App() {
   return (
@@ -12,6 +14,7 @@ export default function App() {
         <Route path='/' element={<HomeRoute />} />
         <Route path='/introduction' element={<IntroductionRoute />} />
         <Route path='/documentation' element={<DocumentationRoute />} />
+        <Route path='/repo/:repo' element={<RepoRoute />} />
       </Routes>
     </Layout>
   )

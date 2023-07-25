@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
@@ -53,7 +54,7 @@ export function Button({
   )
 
   return (
-    <Component className={className} {...props}>
+    <Component className={className} {...props} to={props.href}>
       {arrow === 'left' && arrowIcon}
       {children}
       {arrow === 'right' && arrowIcon}

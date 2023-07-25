@@ -1,3 +1,5 @@
+import React from 'react'
+
 function SunIcon(props) {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>

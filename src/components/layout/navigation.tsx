@@ -1,10 +1,10 @@
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import { Link, useResolvedPath } from 'react-router-dom'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import { useIsInsideMobileNavigation } from '@/components/layout/mobileNavigation.jsx'
-import { Tag } from '@/components/primitives/tag.jsx'
+import { useIsInsideMobileNavigation } from '@/components/layout/mobileNavigation'
+import { Tag } from '@/components/primitives/tag'
 import { remToPx } from '@/lib/remToPx'
 
 function useInitialValue(value, condition = true) {
@@ -155,10 +155,10 @@ export const navigation = [
   {
     title: 'Repositories',
     links: [
-      { title: 'osshealth', to: '/repositories/osshealth' },
-      { title: 'graphql-hooks', to: '/repositories/graphql-hooks' },
-      { title: 'fast-jwt', to: '/repositories/fast-jst' },
-      { title: 'node-cephes', to: '/repositories/node-cephes' },
+      { title: 'fast-jwt', to: '/repo/fast-jwt' },
+      { title: 'graphql-hooks', to: '/repo/graphql-hooks' },
+      { title: 'fastify-secrets-azure', to: '/repo/fastify-secrets-azure' },
+      { title: 'sql', to: '/repo/sql' },
     ],
   },
 ]
