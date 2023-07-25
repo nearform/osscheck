@@ -139,13 +139,13 @@ export default function RepoRoute() {
         className="divide-y divide-gray-100 px-4 py-4 sm:flex-row sm:items-center sm:px-6 lg:px-8"
       >
         {state.current.checks.map(check => {
-          const scI = parseInt(check.score)
-          let sc = 'text-green-400 bg-green-400/10 ring-green-400/30'
-          if (scI < 8 && scI >= 5) {
-            sc = 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
+          const checkScore = parseInt(check.score)
+          let checkScoreClass = 'text-green-400 bg-green-400/10 ring-green-400/30'
+          if (checkScore < 8 && checkScore >= 5) {
+            checkScoreClass = 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
           }
-          if (scI < 5) {
-            sc = 'text-red-400 bg-red-400/10 ring-red-400/30'
+          if (checkScore < 5) {
+            checkScoreClass = 'text-red-400 bg-red-400/10 ring-red-400/30'
           }
           return (
             <li
@@ -168,7 +168,7 @@ export default function RepoRoute() {
                 <div className="flex -space-x-0.5">
                   <dt className="sr-only">Score</dt>
                   <div
-                    className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-none ${sc}`}
+                    className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-none ${checkScoreClass}`}
                   >
                     {check.score}
                   </div>
