@@ -1,5 +1,7 @@
 ![CI](https://github.com/nearform/hub-template/actions/workflows/ci.yml/badge.svg?event=push)
 
+[![CLOMonitor](https://img.shields.io/endpoint?url=https://clomonitor.io/api/projects/lfaidata/1chipml/badge)](https://clomonitor.io/projects/lfaidata/1chipml)
+
 # Hub Template
 
 A feature-packed template to start a new repository on the hub, including:
