@@ -41,7 +41,7 @@ export default function RepoRoute() {
   })
 
   useEffect(() => {
-    fetch(`/data/${repo}/scorecard.json`)
+    fetch(`./data/${repo}/scorecard.json`)
       .then(response => response.json())
       .then(scorecard => {
         const collection = scorecard.reverse() as Scorecard[]
