@@ -1,7 +1,7 @@
 {
-  "name": "hub-template",
+  "name": "osshealth",
   "version": "1.0.0",
-  "description": "Template to start a new repository on the hub",
+  "description": "View metrics on repositories and organizations on GitHub",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -13,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nearform/hub-template.git"
+    "url": "git+https://github.com/nearform/osshealth.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nearform/hub-template/issues"
+    "url": "https://github.com/nearform/osshealth/issues"
   },
   "homepage": "https://nearform.github.io/osshealth/",
   "dependencies": {
