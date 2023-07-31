@@ -23,7 +23,7 @@
   },
   "homepage": "https://nearform.github.io/osshealth/",
   "dependencies": {
-    "@headlessui/react": "^1.7.15",
+    "@headlessui/react": "^1.7.16",
     "@tailwindcss/typography": "^0.5.9",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
