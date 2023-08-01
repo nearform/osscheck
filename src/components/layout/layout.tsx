@@ -1,6 +1,5 @@
 import React from "react"
 import { Header } from './header.js'
-import { HeroPattern } from "../patterns/hero";
 import Footer from './footer.js'
 
 export default function Layout({ children }) {
