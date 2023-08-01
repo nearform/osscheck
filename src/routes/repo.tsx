@@ -1,39 +1,17 @@
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-type Scorecard = {
-  date: string
-  score: string
-  scorecard: {
-    commit: string
-    version: string
-  }
-  repo: {
-    name: string
-    commit: string
-  }
-  metadata: any[]
-  checks: {
-    name: string
-    reason: string
-    score: string
-    details: any[]
-    documentation: {
-      short: string
-      url: string
-    }
-  }[]
-}
+import { Scorecard, useData } from '../providers/data'
 
 type State = {
   loading: boolean
-  scorecard: Scorecard[] | null
+  scorecard: Scorecard | null
   current: Scorecard | null
 }
 
 export default function RepoRoute() {
   const { repo } = useParams()
+  const { loadRepoData } = useData()
   const [state, setState] = useState<State>({
     loading: true,
     scorecard: null,
@@ -41,19 +19,14 @@ export default function RepoRoute() {
   })
 
   useEffect(() => {
-    fetch(`./data/${repo}/scorecard.json`)
-      .then(response => response.json())
-      .then(scorecard => {
-        const collection = scorecard.reverse() as Scorecard[]
-        setState({
-          loading: false,
-          scorecard: collection,
-          current: collection[0]
-        })
+    loadRepoData(repo as string).then(scorecard => {
+      setState({
+        loading: false,
+        scorecard,
+        current: scorecard
       })
+    })
   }, [repo])
-
-  console.log('state', state)
 
   if (state.loading) {
     return (
@@ -140,9 +113,11 @@ export default function RepoRoute() {
       >
         {state.current.checks.map(check => {
           const checkScore = parseInt(check.score)
-          let checkScoreClass = 'text-green-400 bg-green-400/10 ring-green-400/30'
+          let checkScoreClass =
+            'text-green-400 bg-green-400/10 ring-green-400/30'
           if (checkScore < 8 && checkScore >= 5) {
-            checkScoreClass = 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
+            checkScoreClass =
+              'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
           }
           if (checkScore < 5) {
             checkScoreClass = 'text-red-400 bg-red-400/10 ring-red-400/30'
@@ -156,7 +131,9 @@ export default function RepoRoute() {
                 <p className="text-sm font-semibold leading-6 text-gray-900">
                   {check.name}
                 </p>
-                <p className='text-xs leading-5 text-gray-500'>{check.documentation.short}</p>
+                <p className="text-xs leading-5 text-gray-500">
+                  {check.documentation.short}
+                </p>
                 <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
                   <p>{check.reason}</p>
                   {/* <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">

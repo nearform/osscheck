@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useIsInsideMobileNavigation } from '@/components/layout/mobileNavigation'
 import { Tag } from '@/components/primitives/tag'
 import { remToPx } from '@/lib/remToPx'
+import { useData } from '../../providers/data'
 
 function useInitialValue(value, condition = true) {
   let initialValue = useRef(value).current
@@ -51,7 +52,7 @@ function NavLink({ to, tag, active, isAnchorLink = false, children }) {
 function ActivePageMarker({ group, pathname }) {
   let itemHeight = remToPx(2)
   let offset = remToPx(0.25)
-  let activePageIndex = group.links.findIndex((link) => link.to === pathname)
+  let activePageIndex = group.links.findIndex(link => link.to === pathname)
   let top = offset + activePageIndex * itemHeight
 
   return (
@@ -66,7 +67,7 @@ function ActivePageMarker({ group, pathname }) {
   )
 }
 
-function NavigationGroup({ group, className }) {
+function NavigationGroup({ group, data, className }) {
   // If this is the mobile navigation then we always render the initial
   // state, so that the state does not change during the close animation.
   // The state will still update when we re-open (re-render) the navigation.
@@ -76,8 +77,9 @@ function NavigationGroup({ group, className }) {
     isInsideMobileNavigation
   )
 
-  let isActiveGroup =
-    group.links.findIndex((link) => link.to === pathName) !== -1
+  let isActiveGroup = group.links
+    ? group.links.findIndex(link => link.to === pathName) !== -1
+    : false
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -103,41 +105,88 @@ function NavigationGroup({ group, className }) {
           )}
         </AnimatePresence>
         <ul role="list" className="border-l border-transparent">
-          {group.links.map((link) => (
-            <motion.li key={link.to} layout="position" className="relative">
-              <NavLink to={link.to} active={link.to === pathName}>
-                {link.title}
-              </NavLink>
-              <AnimatePresence mode="popLayout" initial={false}>
-                {link.to === pathName && sections.length > 0 && (
-                  <motion.ul
-                    role="list"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: 1,
-                      transition: { delay: 0.1 },
-                    }}
-                    exit={{
-                      opacity: 0,
-                      transition: { duration: 0.15 },
-                    }}
+          {group.links
+            ? group.links.map(link => (
+                <motion.li key={link.to} layout="position" className="relative">
+                  <NavLink to={link.to} active={link.to === pathName}>
+                    {link.title}
+                  </NavLink>
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    {link.to === pathName && sections.length > 0 && (
+                      <motion.ul
+                        role="list"
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: 1,
+                          transition: { delay: 0.1 }
+                        }}
+                        exit={{
+                          opacity: 0,
+                          transition: { duration: 0.15 }
+                        }}
+                      >
+                        {sections.map(section => (
+                          <li key={section.id}>
+                            <NavLink
+                              to={`${link.to}#${section.id}`}
+                              tag={section.tag}
+                              isAnchorLink
+                            >
+                              {section.title}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </motion.li>
+              ))
+            : data
+            ? data.map(repo => {
+                const nameParts = repo.name.split('/')
+                const name = nameParts[nameParts.length - 1]
+                const route = `/repo/${name}`
+                return (
+                  <motion.li
+                    key={name}
+                    layout="position"
+                    className="relative"
                   >
-                    {sections.map((section) => (
-                      <li key={section.id}>
-                        <NavLink
-                          to={`${link.to}#${section.id}`}
-                          tag={section.tag}
-                          isAnchorLink
+                    <NavLink to={route} active={route === pathName}>
+                      {name}
+                    </NavLink>
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      {route === pathName && sections.length > 0 && (
+                        <motion.ul
+                          role="list"
+                          initial={{ opacity: 0 }}
+                          animate={{
+                            opacity: 1,
+                            transition: { delay: 0.1 }
+                          }}
+                          exit={{
+                            opacity: 0,
+                            transition: { duration: 0.15 }
+                          }}
                         >
-                          {section.title}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </motion.li>
-          ))}
+                          {sections.map(section => (
+                            <li key={section.id}>
+                              <NavLink
+                                to={`${route}#${section.id}`}
+                                tag={section.tag}
+                                isAnchorLink
+                              >
+                                {section.title}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                  </motion.li>
+                )
+              })
+            : null}
         </ul>
       </div>
     </li>
@@ -149,21 +198,17 @@ export const navigation = [
     title: 'Guides',
     links: [
       { title: 'Introduction', to: '/introduction' },
-      { title: 'Documentation', to: '/documentation' },
-    ],
+      { title: 'Documentation', to: '/documentation' }
+    ]
   },
   {
     title: 'Repositories',
-    links: [
-      { title: 'fast-jwt', to: '/repo/fast-jwt' },
-      { title: 'graphql-hooks', to: '/repo/graphql-hooks' },
-      { title: 'fastify-secrets-azure', to: '/repo/fastify-secrets-azure' },
-      { title: 'sql', to: '/repo/sql' },
-    ],
-  },
+    data: true
+  }
 ]
 
 export function Navigation(props) {
+  const { repos } = useData()
   return (
     <nav {...props}>
       <ul role="list">
@@ -174,6 +219,7 @@ export function Navigation(props) {
           <NavigationGroup
             key={group.title}
             group={group}
+            data={group.data ? repos : null}
             className={groupIndex === 0 && 'md:mt-0'}
           />
         ))}
