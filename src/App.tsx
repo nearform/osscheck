@@ -7,18 +7,21 @@ import IntroductionRoute from './routes/introduction'
 import DocumentationRoute from './routes/documentation'
 import RepoRoute from './routes/repo'
 import { DataProvider } from './providers/data'
+import { UIProvider } from './providers/ui'
 
 export default function App() {
   return (
     <DataProvider>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomeRoute />} />
-          <Route path="/introduction" element={<IntroductionRoute />} />
-          <Route path="/documentation" element={<DocumentationRoute />} />
-          <Route path="/repo/:repo" element={<RepoRoute />} />
-        </Routes>
-      </Layout>
+      <UIProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomeRoute />} />
+            <Route path="/introduction" element={<IntroductionRoute />} />
+            <Route path="/documentation" element={<DocumentationRoute />} />
+            <Route path="/repo/:repo" element={<RepoRoute />} />
+          </Routes>
+        </Layout>
+      </UIProvider>
     </DataProvider>
   )
 }

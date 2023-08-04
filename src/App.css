@@ -5,3 +5,25 @@
 * {
   border: 0 solid #e5e7eb; 
 } 
+
+svg {
+  height: 100%;
+  margin: auto;
+  display: block;
+}
+
+path {
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+path.grey {
+  stroke: lightgrey;
+}
+
+path.purple {
+  stroke: purple;
+  stroke-dasharray: calc(40 * 3.142 * 1.85);
+  stroke-dashoffset: 40;
+  /* adjust last number for variance */
+}
