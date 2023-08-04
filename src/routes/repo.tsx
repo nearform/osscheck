@@ -1,7 +1,9 @@
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Scorecard, useData } from '../providers/data'
+import Project from '../components/patterns/project'
+import HorizontalScore from '../components/primitives/horizontal-score'
 
 type State = {
   loading: boolean
@@ -30,7 +32,7 @@ export default function RepoRoute() {
 
   if (state.loading) {
     return (
-      <div role="status">
+      <div role="status" className='mt-12 mx-auto pt-12'>
         <svg
           aria-hidden="true"
           className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -56,105 +58,37 @@ export default function RepoRoute() {
     return null
   }
 
-  const organization = state.current.repo.name
-    .split('github.com/')[1]
-    .split('/')[0]
-
-  const scoreInt = parseInt(state.current.score)
-  let scoreClass = 'text-green-400 bg-green-400/10 ring-green-400/30'
-  if (scoreInt < 8 && scoreInt >= 5) {
-    scoreClass = 'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
-  }
-  if (scoreInt < 5) {
-    scoreClass = 'text-red-400 bg-red-400/10 ring-red-400/30'
-  }
-
-  const versionDate = format(new Date(state.current.date), 'MMM d, yyyy')
-
   return (
-    <>
-      <header className="sticky top-12 bg-white shadow">
-        <div className="flex flex-col items-start justify-between gap-x-8 gap-y-4 px-4 py-4 sm:flex-row sm:items-center sm:px-6 lg:px-8">
-          <div>
-            <div className="flex items-center gap-x-3">
-              <div className="flex-none rounded-full bg-green-400/10 p-1 text-green-400">
-                <div className="h-2 w-2 rounded-full bg-current"></div>
-              </div>
-              <h1 className="flex gap-x-3 text-base leading-7">
-                {organization ? (
-                  <>
-                    <span className="font-semibold text-gray-800">
-                      {organization}
-                    </span>
-                    <span className="text-gray-600">/</span>
-                  </>
-                ) : null}
-                <span className="font-semibold text-gray-800">{repo}</span>
-              </h1>
-            </div>
-            <p className="mt-2 text-xs leading-6 text-gray-400">
-              {versionDate}
-            </p>
-            <p className="mt-2 text-xs leading-6 text-gray-400">
-              Commit: {state.current.repo.commit}
-            </p>
+    <section className="flex flex-col w-full mt-6 space-y-6 pb-12">
+      <div className="w-full h-14 px-6 bg-white rounded-2xl justify-start items-center gap-1 inline-flex">
+        <Link className="relative justify-start items-center gap-1 inline-flex" to="/">
+          <div className='w-6 h-6 relative'>
+            <img src='./icons/arrow-left-outline.svg' />
           </div>
-          <div
-            className={`order-first flex-none rounded-full px-3 py-2 text-sm font-medium ring-1 ring-inset sm:order-none ${scoreClass}`}
-          >
-            {state.current.score}
-          </div>
-        </div>
-      </header>
+          <div className="text-gray-700 text-base font-bold leading-normal">Back</div>
+        </Link>
+      </div>
 
-      <ul
-        role="list"
-        className="divide-y divide-gray-100 px-4 py-4 sm:flex-row sm:items-center sm:px-6 lg:px-8"
-      >
-        {state.current.checks.map(check => {
-          const checkScore = parseInt(check.score)
-          let checkScoreClass =
-            'text-green-400 bg-green-400/10 ring-green-400/30'
-          if (checkScore < 8 && checkScore >= 5) {
-            checkScoreClass =
-              'text-yellow-400 bg-yellow-400/10 ring-yellow-400/30'
-          }
-          if (checkScore < 5) {
-            checkScoreClass = 'text-red-400 bg-red-400/10 ring-red-400/30'
-          }
+      <Project name={repo as string} project={{ name: repo as string }} />
+
+      {state.current.checks.map(check => {
+          const score = check.score === -1 ? 0 : check.score
           return (
-            <li
-              key={check.name}
-              className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-5 sm:flex-nowrap"
-            >
-              <div>
-                <p className="text-sm font-semibold leading-6 text-gray-900">
-                  {check.name}
-                </p>
-                <p className="text-xs leading-5 text-gray-500">
-                  {check.documentation.short}
-                </p>
-                <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                  <p>{check.reason}</p>
-                  {/* <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
-                    <circle cx={1} cy={1} r={1} />
-                  </svg> */}
-                </div>
-              </div>
-              <dl className="flex w-full flex-none justify-between gap-x-8 sm:w-auto">
-                <div className="flex -space-x-0.5">
-                  <dt className="sr-only">Score</dt>
-                  <div
-                    className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-none ${checkScoreClass}`}
-                  >
-                    {check.score}
+            <div key={check.name} className="p-6 bg-gray-50 rounded-lg flex-col justify-start items-start gap-6 inline-flex">
+              <div className="self-stretch justify-start items-center gap-8 inline-flex">
+                <div className="grow shrink basis-0 h-4 justify-start items-center gap-4 flex">
+                  <div className="w-36 text-gray-500 text-sm font-semibold uppercase leading-none">{check.name}</div>
+                  <div className='w-full'>
+                    <HorizontalScore score={Number(score) * 10} />
                   </div>
                 </div>
-              </dl>
-            </li>
+                <div className="w-6 h-6 relative">
+                  <img src="./icons/chevron-down.svg" />
+                </div>
+              </div>
+            </div>
           )
         })}
-      </ul>
-    </>
+    </section>
   )
 }

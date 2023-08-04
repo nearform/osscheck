@@ -1,16 +1,14 @@
 import React from "react"
-import { Header } from './header.js'
-import Footer from './footer.js'
+import { Header } from './header'
 
 export default function Layout({ children }) {
   return (
-    <div className='lg:ml-56 xl:ml-56'>
+    <div>
       <Header />
-      <div className="relative pt-14 flex flex-col min-h-screen">
-        <main className="flex-1">
+      <div className="relative flex flex-col min-h-screen bg-gray-100">
+        <main className="flex-1 flex w-full lg:max-w-5xl xl:max-w-7xl mx-auto">
           {children}
         </main>
-        <Footer />
       </div>
     </div>
   )

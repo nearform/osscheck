@@ -1,103 +1,69 @@
-import React, { forwardRef } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import clsx from 'clsx'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useUI } from '../../providers/ui'
 
-import { Navigation } from './navigation'
-import {
-  MobileNavigation,
-  useIsInsideMobileNavigation,
-  useMobileNavigationStore
-} from '@/components/layout/mobileNavigation'
-import { ModeToggle } from '@/components/layout/modeToggle'
-
-function TopLevelNavItem({ to, children }) {
+export const Header = function Header() {
+  const { term, setUiState } = useUI()
   return (
-    <li>
-      <Link
-        to={to}
-        className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-      >
-        {children}
-      </Link>
-    </li>
-  )
-}
-
-export const Header = forwardRef(function Header({ className }, ref) {
-  let { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
-  let isInsideMobileNavigation = useIsInsideMobileNavigation()
-
-  let { scrollY } = useScroll()
-  let bgOpacityLight = useTransform(scrollY, [0, 72], [0.5, 0.9])
-  let bgOpacityDark = useTransform(scrollY, [0, 72], [0.2, 0.8])
-
-  return (
-    <div className="lg:ml-56 xl:ml-56">
-      <motion.header
-        layoutScroll
-        className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex"
-      >
-        <div className="contents lg:pointer-events-auto lg:block lg:w-56 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 lg:dark:border-white/10 xl:w-56">
-          <div className="hidden lg:flex">
-            <Link to="/" aria-label="Home">
-              <h1 className="self-center ml-3 text-2xl font-semibold whitespace-nowrap dark:text-white">
-                OSSHealth
-              </h1>
+    <div className="w-full h-20 py-4 bg-indigo-950 flex">
+      <div className="justify-between items-center gap-96 flex w-full lg:max-w-5xl xl:max-w-7xl mx-auto">
+        <div className="justify-start items-center gap-6 flex flex-1">
+          <div className="w-60 flex-col justify-start items-start gap-2 inline-flex">
+            <Link
+              className="h-14 flex-col justify-start items-end gap-1 flex"
+              to="/"
+            >
+              <div className="w-48 h-8 pr-px justify-center items-center gap-3 inline-flex">
+                <div className="justify-center items-center inline-flex">
+                  <div className="relative justify-start items-center flex">
+                    <img className="mr-1" src="./icons/logo-mark.svg" />
+                    <div className="">
+                      <img
+                        className="w-[160px] h-[34px]"
+                        src="./icons/oss-check.svg"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="justify-end items-center gap-2 inline-flex">
+                <div className="text-center text-white text-xs font-semibold leading-none">
+                  by
+                </div>
+                <div className="w-20 h-3 relative">
+                  <img src="./icons/nf-logo.svg" />
+                </div>
+              </div>
             </Link>
           </div>
-          <motion.div
-            ref={ref}
-            className={clsx(
-              className,
-              'fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-56 lg:z-30 lg:px-8 xl:left-56 backdrop-blur-sm dark:backdrop-blur',
-              !isInsideMobileNavigation &&
-                'backdrop-blur-sm dark:backdrop-blur',
-              isInsideMobileNavigation
-                ? 'bg-white dark:bg-zinc-900'
-                : 'bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]'
-            )}
-            style={{
-              '--bg-opacity-light': bgOpacityLight,
-              '--bg-opacity-dark': bgOpacityDark
-            }}
-          >
-            <div
-              className={clsx(
-                'absolute inset-x-0 top-full h-px transition',
-                (isInsideMobileNavigation || !mobileNavIsOpen) &&
-                  'bg-zinc-900/7.5 dark:bg-white/7.5'
-              )}
-            />
-            <div className="flex items-center gap-5 lg:hidden">
-              <MobileNavigation />
-              <Link to="/" aria-label="Home">
-                <h1 className="self-center ml-3 font-semibold whitespace-nowrap dark:text-white">
-                  OSSHealth
-                </h1>
+          <div className="w-24 justify-start items-center gap-4 flex">
+            <div className="px-6 py-1 rounded-lg justify-center items-center gap-2 flex">
+              <Link
+                className="text-center text-white text-lg font-semibold leading-relaxed"
+                to="/documentation"
+              >
+                Docs
               </Link>
             </div>
-            <div className="flex items-center gap-5 flex-1 w-full">
-              <nav className="hidden md:block flex-1">
-                <ul role="list" className="flex items-center gap-8">
-                  <TopLevelNavItem to="/introduction">
-                    Introduction
-                  </TopLevelNavItem>
-                  <TopLevelNavItem to="/documentation">
-                    Documentation
-                  </TopLevelNavItem>
-                </ul>
-              </nav>
-              <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
-              <div className="flex gap-4">
-                <ModeToggle />
-              </div>
-            </div>
-          </motion.div>
-
-          <Navigation className="hidden lg:mt-10 lg:block" />
+          </div>
         </div>
-      </motion.header>
+        <div className="w-72 py-3">
+          <div className="relative">
+            <img
+              src="./icons/search-outline.svg"
+              className="w-4 absolute top-3 left-3"
+            />
+            <input
+              type="search"
+              name="term"
+              className="pl-8 pr-2 bg-gray-50 rounded-lg border border-gray-200 flex-col justify-center items-start gap-2 inline-flex w-full"
+              placeholder="Search"
+              value={term}
+              onChange={e => setUiState(s => ({ ...s, term: e.target.value }))}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
-})
+}
