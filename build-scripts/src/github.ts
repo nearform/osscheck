@@ -1,9 +1,5 @@
 import { App, Octokit } from 'octokit'
 
-const GH_PRIV_KEY = process.env.GH_PRIV_KEY
-const GH_APP_ID = process.env.GH_APP_ID
-const GH_APP_INSTALL_ID = process.env.GH_APP_INSTALL_ID
-
 interface GqlResponse { 
   organization: {
     repositories: {
@@ -35,49 +31,46 @@ interface QueryGitHubArgs {
   org: string;
 }
 
-export default async function* queryGitHub({ itemsPerPage, org }: QueryGitHubArgs) {
+interface GitHubClientArgs {
+  gh_priv_key: string;
+  gh_app_id: string;
+  gh_app_install_id: number;
+}
+
+export default async function* queryGitHub(args: QueryGitHubArgs & GitHubClientArgs) {
   // fetch first page
-  let data = await fetchData({ org, itemsPerPage })
+  let data = await fetchData(args)
 
   while (data.length) {
     for (const item of data) {
       yield item.node;
     }
     // fetch next page
-    data = await fetchData({ org, itemsPerPage, cursor: data[data.length - 1].cursor })
+    data = await fetchData({ ...args, cursor: data[data.length - 1].cursor })
   }
 }
 
 type GitHubClient = {
-  (): Promise<Octokit>;
+  (args: GitHubClientArgs): Promise<Octokit>;
   octokit?: Octokit;
 }
-const gitHubClient: GitHubClient = async () => {
-  if (!GH_PRIV_KEY) throw Error('Missing env var GH_PRIV_KEY')
-  if (!GH_APP_ID) throw Error('Missing env var GH_APP_ID')
-  if (!GH_APP_INSTALL_ID) throw Error('Missing env var GH_APP_INSTALL_ID')
-
-  const instalationId = parseInt(GH_APP_INSTALL_ID, 10);
-  if (!instalationId) {
-    throw Error('Invalid env var GH_APP_INSTALL_ID. Must be a valid Int.')
-  }
-
+const gitHubClient: GitHubClient = async (args) => {
   if (gitHubClient.octokit) {
     return gitHubClient.octokit
   }
 
   const app = new App({
-    appId: GH_APP_ID,
-    privateKey: GH_PRIV_KEY,
+    appId: args.gh_app_id,
+    privateKey: args.gh_priv_key,
   });
 
-  gitHubClient.octokit = await app.getInstallationOctokit(instalationId)
+  gitHubClient.octokit = await app.getInstallationOctokit(args.gh_app_install_id)
 
   return gitHubClient.octokit 
 }
 
-const fetchData = async ({ org, itemsPerPage, cursor }: QueryGitHubArgs & { cursor?: string }) => {
-  const client = await gitHubClient()
+const fetchData = async (args: QueryGitHubArgs & GitHubClientArgs & { cursor?: string }) => {
+  const client = await gitHubClient(args)
   const res = await client.graphql<GqlResponse>(
     `query GetRepoData($org: String!, $itemsPerPage: Int!, $cursor: String ) {
       organization(login: $org) {
@@ -112,9 +105,9 @@ const fetchData = async ({ org, itemsPerPage, cursor }: QueryGitHubArgs & { curs
       }
     }`,
     {
-      org,
-      itemsPerPage,
-      cursor
+      org: args.org,
+      itemsPerPage: args.itemsPerPage,
+      cursor: args.cursor
     }
   )
 

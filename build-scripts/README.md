@@ -4,7 +4,7 @@ This script fetches data related to public projects from GitHub and Scorecard AP
 # Usage
 
 ```
-    $ npx build-scripts --path ./some/dir --org myGitHubOrgName
+    $ npx build-scripts --path ./some/dir --org myGitHubOrgName --gh_priv_key "$GH_PRIV_KEY" --gh_app_id "$GH_APP_ID" --gh_app_install_id "$GH_APP_INSTALL_ID"
 ```
 
 We need to ensure the following env vars are defined:
