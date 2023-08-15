@@ -1,0 +1,20 @@
+{
+  "name": "build-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "tsc"
+  },
+  "bin": {
+    "build-scripts": "./bin/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "octokit": "^3.1.0",
+    "typescript": "^5.1.6"
+  }
+}

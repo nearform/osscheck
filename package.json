@@ -4,11 +4,15 @@
   "description": "View metrics on repositories and organizations on GitHub",
   "main": "index.js",
   "type": "module",
+  "workspaces": [
+    "build-scripts"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "postinstall": "build-scripts --path ./public/data --org nearform",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
@@ -25,6 +29,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.16",
     "@tailwindcss/typography": "^0.5.9",
+    "build-scripts": "^1.0.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "flowbite": "^1.8.1",
@@ -52,7 +57,6 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
-    "octokit": "^3.1.0",
     "postcss": "^8.4.24",
     "prettier": "^3.0.1",
     "tailwindcss": "^3.3.2",
