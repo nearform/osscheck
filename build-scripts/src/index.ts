@@ -14,21 +14,20 @@ program
   .parse();
 const options = program.opts();
 
-
-if (!fs.existsSync(options.path)){
+if (!fs.existsSync(options.path)) {
   fs.mkdirSync(options.path, { recursive: true });
 }
 
 (async () => {
   const index = [] // main doc, used for searches & pagination
-  const queryGitHubArgs = { 
-    org: options.org, 
+  const queryGitHubArgs = {
+    org: options.org,
     itemsPerPage: 10,
     gh_priv_key: options.gh_priv_key,
     gh_app_id: options.gh_app_id,
     gh_app_install_id: options.gh_app_install_id
   }
-  
+
   for await (const gitHubItem of queryGitHub(queryGitHubArgs)) {
     const scorecard = await querySecurityScorecard({ platform: 'github.com', org: options.org, repo: gitHubItem.name })
 

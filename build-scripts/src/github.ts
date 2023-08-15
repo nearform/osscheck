@@ -111,5 +111,5 @@ const fetchData = async (args: QueryGitHubArgs & GitHubClientArgs & { cursor?: s
     }
   )
 
-  return res.organization?.repositories?.edges || []
+  return res.organization.repositories.edges
 }
