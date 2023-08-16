@@ -9,10 +9,10 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run buid:json && vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "postinstall": "./build-scripts/bin/index.js --path ./public/data --org nearform --gh_priv_key \"$GH_PRIV_KEY\" --gh_app_id \"$GH_APP_ID\" --gh_app_install_id \"$GH_APP_INSTALL_ID\" ",
+    "buid:json": "./build-scripts/bin/index.js --path ./public/data --org nearform --gh_priv_key \"$GH_PRIV_KEY\" --gh_app_id \"$GH_APP_ID\" --gh_app_install_id \"$GH_APP_INSTALL_ID\" ",
     "test": "echo \"TODO\" && npm run test --ws"
   },
   "repository": {
