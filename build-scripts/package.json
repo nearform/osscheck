@@ -1,11 +1,11 @@
 {
-  "name": "@workspace/build-scripts",
+  "name": "build-scripts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "tap --ts --reporter=spec --coverage-report=html --coverage-report=text --100 --no-browser test/*.spec.ts",
-    "postinstall": "tsc"
+    "postinstall": "tsc && chmod +x ./bin/index.js"
   },
   "bin": {
     "build-scripts": "./bin/index.js"
