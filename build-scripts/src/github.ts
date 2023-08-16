@@ -1,30 +1,35 @@
 import { App, Octokit } from 'octokit'
 
-interface GqlResponse { 
+interface GqlResponse {
   organization: {
     repositories: {
       edges: {
         cursor: string;
-        node: {
-          id: string;
-          name: string;
-          description: string;
-          createdAt: string;
-          updatedAt: string;
-          forkCount: number;
-          hasIssuesEnabled: boolean;
-          homepageUrl: string;
-          issues: {
-            totalCount: number;
-          };
-          licenseInfo: {
-            key: string;
-            name: string;
-          };
-        };
+        node: GqlResponseNode;
       }[]
     }
   }
+  errors?: {
+    message: string;
+  }[]
+}
+
+interface GqlResponseNode {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  forkCount: number;
+  hasIssuesEnabled: boolean;
+  homepageUrl: string;
+  issues: {
+    totalCount: number;
+  };
+  licenseInfo: {
+    key: string;
+    name: string;
+  };
 }
 interface QueryGitHubArgs {
   itemsPerPage: number;
@@ -37,7 +42,7 @@ interface GitHubClientArgs {
   gh_app_install_id: number;
 }
 
-export default async function* queryGitHub(args: QueryGitHubArgs & GitHubClientArgs) {
+export default async function* queryGitHub(args: QueryGitHubArgs & GitHubClientArgs): AsyncGenerator<GqlResponseNode> {
   // fetch first page
   let data = await fetchData(args)
 
@@ -54,7 +59,7 @@ type GitHubClient = {
   (args: GitHubClientArgs): Promise<Octokit>;
   octokit?: Octokit;
 }
-const gitHubClient: GitHubClient = async (args) => {
+const gitHubClient: GitHubClient = async (args): Promise<Octokit> => {
   if (gitHubClient.octokit) {
     return gitHubClient.octokit
   }
@@ -66,10 +71,12 @@ const gitHubClient: GitHubClient = async (args) => {
 
   gitHubClient.octokit = await app.getInstallationOctokit(args.gh_app_install_id)
 
-  return gitHubClient.octokit 
+  return gitHubClient.octokit
 }
 
-const fetchData = async (args: QueryGitHubArgs & GitHubClientArgs & { cursor?: string }) => {
+const fetchData = async (
+  args: QueryGitHubArgs & GitHubClientArgs & { cursor?: string }
+  ): Promise<GqlResponse["organization"]["repositories"]["edges"]> => {
   const client = await gitHubClient(args)
   const res = await client.graphql<GqlResponse>(
     `query GetRepoData($org: String!, $itemsPerPage: Int!, $cursor: String ) {
@@ -110,6 +117,11 @@ const fetchData = async (args: QueryGitHubArgs & GitHubClientArgs & { cursor?: s
       cursor: args.cursor
     }
   )
+
+  if (res.errors) {
+    console.error(res.errors.map((err) => err.message))
+    throw Error("Unable to fetch data from GitHub GQL API")
+  }
 
   return res.organization.repositories.edges
 }

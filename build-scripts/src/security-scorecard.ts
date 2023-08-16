@@ -1,34 +1,27 @@
+import { z } from "zod";
+
 interface QueryApiSecurityArgs {
   platform: string;
   org: string;
   repo: string;
 }
 
-interface ReqResponse {
-  checks: {
-    details: string[];
-    documentation: {
-      short: string;
-      url: string;
-    },
-    name: string;
-    reason: string;
-    score: number;
-  }[];
-  date: string;
-  metadata: string;
-  repo: {
-    commit: string;
-    name: string;
-  };
-  score: number;
-  scorecard: {
-    commit: string;
-    version: string;
-  }
-}
+const reqResponseSchema = z.object({
+  checks: z.nullable(z.array(z.object({
+    details: z.nullable(z.array(z.string())),
+    documentation: z.object({
+      short: z.string(),
+      url: z.string(),
+    }),
+    name: z.string(),
+    reason: z.string(),
+    score: z.number()
+  }))),
+  score: z.nullable(z.number())
+})
+type ReqResponse = z.infer<typeof reqResponseSchema>;
 
-export default async function queryApiSecurity({ platform, org, repo }: QueryApiSecurityArgs) {
+export default async function queryApiSecurity({ platform, org, repo }: QueryApiSecurityArgs): Promise<{ checks: ReqResponse["checks"]; score: number | null; }> {
   return fetch(
     `https://api.securityscorecards.dev/projects/${platform}/${org}/${repo}`,
     {
@@ -38,11 +31,7 @@ export default async function queryApiSecurity({ platform, org, repo }: QueryApi
       }
     }
   )
-    .then(async response => response.status === 200 ?
-      (({ checks, score }: ReqResponse) => ({ checks, score }))(await response.json()) :
-      {
-        checks: [],
-        score: null
-      }
-    )
+    .then(response => response.status === 200 ? response.json() : { checks: [], score: null })
+    .then(data => reqResponseSchema.parse(data))
+    .then(({ checks, score }) => ({ checks, score }))
 }

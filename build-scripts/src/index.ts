@@ -14,12 +14,19 @@ program
   .parse();
 const options = program.opts();
 
-if (!fs.existsSync(options.path)) {
-  fs.mkdirSync(options.path, { recursive: true });
+type RepoId = string;
+type DateIsoString = string;
+interface RepositoryInfoStatus {
+  id: RepoId;
+  name: string;
+  rating: number | null;
+  createdAt: DateIsoString;
+  updatedAt: DateIsoString;
 }
+(async (): Promise<void> => {
+  await ensureFolderExists(options.path)
 
-(async () => {
-  const index = [] // main doc, used for searches & pagination
+  const index: RepositoryInfoStatus[] = [] // main doc, used for searches & pagination
   const queryGitHubArgs = {
     org: options.org,
     itemsPerPage: 10,
@@ -51,9 +58,15 @@ if (!fs.existsSync(options.path)) {
     ])
   }
 
-  saveJson(`${options.path}/index.json`, index)
+  await saveJson(`${options.path}/index.json`, index)
 })()
 
-async function saveJson(filePath: string, data: Record<string, any>) {
+async function ensureFolderExists(dirname: string): Promise<void> {
+  if (!fs.existsSync(dirname)) {
+    await fsp.mkdir(dirname, { recursive: true });
+  }
+}
+
+async function saveJson(filePath: string, data: Record<string, any>): Promise<void> {
   await fsp.writeFile(filePath, JSON.stringify(data), 'utf8');
 }

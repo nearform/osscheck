@@ -48,7 +48,7 @@ test('it returns an async iterator', async t => {
         octokit: {
             App: class App {
                 getInstallationOctokit = () => ({
-                    graphql: (query: string, vars: Record<string, any>) => {
+                    graphql: (_: string, vars: Record<string, any>) => {
                         const fixture = fixtures.shift()
                         t.same(vars, fixture?.vars)
                         return fixture?.res
@@ -69,7 +69,7 @@ test('it returns an async iterator', async t => {
     for await (const gitHubItem of queryGitHub(queryGitHubArgs)) {
         result.push(gitHubItem)
     }
-    
+
     t.same(result, [
         {
             id: "MDEwOlJlcG9zaXRvcnk3MDU4MDIzNQ==",
@@ -89,4 +89,55 @@ test('it returns an async iterator', async t => {
             },
         },
     ])
+})
+
+test('it throws if the API ever changes', async t => {
+    const { default: queryGitHub } = t.mock('../src/github', {
+        octokit: {
+            App: class App {
+                getInstallationOctokit = () => ({
+                    graphql: () => ({
+                        "errors": [
+                            {
+                                "path": [
+                                    "query GetRepoData",
+                                    "organization",
+                                    "repositories",
+                                    "edges",
+                                    "node",
+                                    "homepageUrl"
+                                ],
+                                "extensions": {
+                                    "code": "undefinedField",
+                                    "typeName": "Repository",
+                                    "fieldName": "homepageUrl"
+                                },
+                                "locations": [
+                                    {
+                                        "line": 20,
+                                        "column": 15
+                                    }
+                                ],
+                                "message": "Field 'homepageUrl' doesn't exist on type 'Repository'"
+                            }
+                        ]
+                    })
+                })
+            }
+        }
+    })
+
+    const queryGitHubArgs = {
+        org: 'myorg',
+        itemsPerPage: 1,
+        gh_priv_key: '-----------',
+        gh_app_id: '-----------',
+        gh_app_install_id: '-----------'
+    }
+    try {
+        await queryGitHub(queryGitHubArgs).next()
+        t.fail("Should have thrown an error")
+    } catch (err: any) {
+        t.equal(err?.message, "Unable to fetch data from GitHub GQL API")
+    }
 })
