@@ -15,7 +15,7 @@ export type Scorecard = {
   checks: {
     name: string
     reason: string
-    score: string
+    score: number
     details: any[]
     documentation: {
       short: string
