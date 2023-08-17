@@ -1,36 +1,34 @@
 import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Scorecard, useData } from '../providers/data'
+import { useLazyData } from '../providers/data'
 import Project from '../components/patterns/project'
 import HorizontalScore from '../components/primitives/horizontal-score'
 
 type State = {
   loading: boolean
-  scorecard: Scorecard | null
-  current: Scorecard | null
 }
 
 export default function RepoRoute() {
   const { repo } = useParams()
-  const { loadRepoData } = useData()
-  const [state, setState] = useState<State>({
-    loading: true,
-    scorecard: null,
-    current: null
-  })
+  const data = useLazyData()
+  // const [state, setState] = useState<State>({
+  //   loading: true,
+  //   scorecard: null,
+  //   current: null
+  // })
 
-  useEffect(() => {
-    loadRepoData(repo as string).then(scorecard => {
-      setState({
-        loading: false,
-        scorecard,
-        current: scorecard
-      })
-    })
-  }, [repo])
+  // useEffect(() => {
+  //   loadRepoData(repo as string).then(scorecard => {
+  //     setState({
+  //       loading: false,
+  //       scorecard,
+  //       current: scorecard
+  //     })
+  //   })
+  // }, [repo])
 
-  if (state.loading) {
+  if (data.state === 'loading') {
     return (
       <div role="status" className='mt-12 mx-auto pt-12'>
         <svg
@@ -54,41 +52,41 @@ export default function RepoRoute() {
     )
   }
 
-  if (!state.current) {
-    return null
-  }
+  // if (!state.current) {
+  //   return null
+  // }
 
-  return (
-    <section className="flex flex-col w-full mt-6 space-y-6 pb-12">
-      <div className="w-full h-14 px-6 bg-white rounded-2xl justify-start items-center gap-1 inline-flex">
-        <Link className="relative justify-start items-center gap-1 inline-flex" to="/">
-          <div className='w-6 h-6 relative'>
-            <img src='./icons/arrow-left-outline.svg' />
-          </div>
-          <div className="text-gray-700 text-base font-bold leading-normal">Back</div>
-        </Link>
-      </div>
+  // return (
+  //   <section className="flex flex-col w-full mt-6 space-y-6 pb-12">
+  //     <div className="w-full h-14 px-6 bg-white rounded-2xl justify-start items-center gap-1 inline-flex">
+  //       <Link className="relative justify-start items-center gap-1 inline-flex" to="/">
+  //         <div className='w-6 h-6 relative'>
+  //           <img src='./icons/arrow-left-outline.svg' />
+  //         </div>
+  //         <div className="text-gray-700 text-base font-bold leading-normal">Back</div>
+  //       </Link>
+  //     </div>
 
-      <Project name={repo as string} project={{ name: repo as string }} />
+  //     <Project name={repo as string} project={{ name: repo as string }} />
 
-      {state.current.checks.map(check => {
-          const score = check.score === -1 ? 0 : check.score
-          return (
-            <div key={check.name} className="p-6 bg-gray-50 rounded-lg flex-col justify-start items-start gap-6 inline-flex">
-              <div className="self-stretch justify-start items-center gap-8 inline-flex">
-                <div className="grow shrink basis-0 h-4 justify-start items-center gap-4 flex">
-                  <div className="w-36 text-gray-500 text-sm font-semibold uppercase leading-none">{check.name}</div>
-                  <div className='w-full'>
-                    <HorizontalScore score={Number(score) * 10} />
-                  </div>
-                </div>
-                <div className="w-6 h-6 relative">
-                  <img src="./icons/chevron-down.svg" />
-                </div>
-              </div>
-            </div>
-          )
-        })}
-    </section>
-  )
+  //     {state.current.checks.map(check => {
+  //         const score = check.score === -1 ? 0 : check.score
+  //         return (
+  //           <div key={check.name} className="p-6 bg-gray-50 rounded-lg flex-col justify-start items-start gap-6 inline-flex">
+  //             <div className="self-stretch justify-start items-center gap-8 inline-flex">
+  //               <div className="grow shrink basis-0 h-4 justify-start items-center gap-4 flex">
+  //                 <div className="w-36 text-gray-500 text-sm font-semibold uppercase leading-none">{check.name}</div>
+  //                 <div className='w-full'>
+  //                   <HorizontalScore score={Number(score) * 10} />
+  //                 </div>
+  //               </div>
+  //               <div className="w-6 h-6 relative">
+  //                 <img src="./icons/chevron-down.svg" />
+  //               </div>
+  //             </div>
+  //           </div>
+  //         )
+  //       })}
+  //   </section>
+  // )
 }

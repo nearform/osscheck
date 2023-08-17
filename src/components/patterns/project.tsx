@@ -1,30 +1,32 @@
 import React from 'react'
 import ProjectLogo from '../primitives/project-logo'
 import HorizontalScore from '../primitives/horizontal-score'
+import type { Repo } from '../../providers/data'
 
 type Props = {
-  project: { name: string }
-  name: string
+  repo: Repo
 }
 
-export default function Project(props: Props) {
+export default function Project({repo}: Props) {
+  // TODO link to page details
+  // <Link to={`/repo/${repo.name}`} key={repo.id} className="group"></Link>
   return (
     <div className="w-full pl-6 pr-8 pt-7 pb-8 bg-white rounded-2xl flex-col justify-start items-start gap-6 inline-flex group-hover:shadow-lg transition-shadow duration-300">
       <div className="self-stretch flex-col justify-start items-start gap-3 flex">
         <div className="justify-start items-center gap-4 inline-flex">
           <ProjectLogo />
           <div className="text-gray-700 text-2xl font-semibold leading-9">
-            {props.name}
+            {repo.name}
           </div>
         </div>
         <div className="justify-start items-center gap-2 inline-flex">
-          <div className="px-2.5 py-0.5 bg-gray-100 rounded-md justify-center items-center flex">
+          {/* <div className="px-2.5 py-0.5 bg-gray-100 rounded-md justify-center items-center flex">
             <div className="text-center text-gray-700 text-xs font-medium leading-none">
               Sandbox
             </div>
-          </div>
+          </div> */}
           <div className="text-gray-400 text-xs font-normal leading-none italic">
-            Updated 5hrs ago
+            Updated 5hrs ago ({repo.updatedAt})
           </div>
         </div>
         <div className="justify-start items-center gap-1 inline-flex">
@@ -33,7 +35,8 @@ export default function Project(props: Props) {
           </div>
           <div className="justify-start items-baseline gap-2 flex">
             <div className="text-violet-900 text-sm font-medium leading-tight">
-              Github
+              <a href={`https://github.com/nearform/${repo.name}`}>Github</a> 
+              {/* TODO get the org name from data  */}
             </div>
             <div className="text-gray-400 text-xs font-normal leading-none italic">
               Added 6th April 2022
