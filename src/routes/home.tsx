@@ -133,10 +133,26 @@ function prepareUiState({ repos, term, limit, sort }: { repos: Repo[] } & Pick<U
   return {
     totalNumRepos: repos.length,
     repos: [
+      filterByScore(0, 10),
       searchRepos(term),
       sortRepos(sort),
       paginateRepos(limit, pageIndex)
     ].reduce((value, cb) => cb(value), repos)
+  }
+}
+
+function filterByScore(min: number, max: number): (repos: Repo[]) => Repo[] {
+  if (max > 10) {
+    throw Error('Ratings vary between 0 and 10. argument max is invalid')
+  }
+  if (max < 0) {
+    throw Error('Ratings vary between 0 and 10. argument min is invalid')
+  }
+  if (min >= max) {
+    throw Error('Ratings vary between 0 and 10. min must be lower than max')
+  }
+  return (repos: Repo[]): Repo[] => {
+    return repos.filter(repo => (repo.index.rating || 0) >= min && (repo.index.rating || 0) < max)
   }
 }
 
@@ -157,7 +173,7 @@ function searchRepos(term: string): (repos: Repo[]) => Repo[] {
 
 function sortRepos(sort: UiState['sort']): (repos: Repo[]) => Repo[] {
   return (repos: Repo[]): Repo[] => {
-    return repos.sort((a, b) => {
+    repos.sort((a, b) => {
       if (sort === Sort.alphabetical_asc) {
         return a.index.name.localeCompare(b.index.name)
       }
@@ -165,13 +181,14 @@ function sortRepos(sort: UiState['sort']): (repos: Repo[]) => Repo[] {
         return b.index.name.localeCompare(a.index.name)
       }
       if (sort === Sort.score_asc) {
-        return (a.index.rating || 0) > (b.index.rating || 0) ? 1 : 0
+        return (b.index.rating || 0) - (a.index.rating || 0)
       }
       if (sort === Sort.score_desc) {
-        return (b.index.rating || 0) > (a.index.rating || 0) ? 1: 0
+        return (a.index.rating || 0) - (b.index.rating || 0)
       }
       return 0
     })
+    return repos
   }
 }
 

@@ -48,8 +48,8 @@ interface RepositoryInfoStatus {
 
     await Promise.all([
       saveJson(`${options.path}/${gitHubItem.id}.excerpt.json`, {
-        ...gitHubItem,// TODO cleanup schema
-        ...scorecard
+        description: gitHubItem.description,
+        checks: prepareChecks(scorecard.checks || [])
       }),
       saveJson(`${options.path}/${gitHubItem.id}.details.json`, {
         ...gitHubItem,// TODO cleanup schema
@@ -69,4 +69,12 @@ async function ensureFolderExists(dirname: string): Promise<void> {
 
 async function saveJson(filePath: string, data: Record<string, any>): Promise<void> {
   await fsp.writeFile(filePath, JSON.stringify(data), 'utf8');
+}
+
+function prepareChecks(checks: {name: string; score: number}[]) {
+  const obj: Record<string, number> = {};
+  checks.forEach(({name, score}) => {
+    obj[name] = score
+  })
+  return obj
 }

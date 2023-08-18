@@ -72,7 +72,7 @@ export default function Project({ repo }: Props) {
               style={{
                 strokeWidth: 5,
                 strokeDasharray: 420,
-                strokeDashoffset: 'calc(40 * 3.142 * 1.85)',
+                strokeDashoffset: 420 - (230 * ((state.rating || 0) / 10)),
                 fill: 'none'
               }}
               className="stroke-green-400"
@@ -83,17 +83,35 @@ export default function Project({ repo }: Props) {
             <div className="text-center text-gray-500 text-xs font-normal leading-none mt-1">
               Total
               <div className="text-center text-gray-700 text-2xl font-bold leading-9 -mt-1">
-                92
+                {state.rating && state.rating * 10 || '--'}
               </div>
             </div>
           </div>
         </div>
         <div className="flex flex-col flex-1 space-y-2 mt-2">
-          <HorizontalScore score={92} label={'Best Practices'} />
-          <HorizontalScore score={44} label={'Documentation'} />
-          <HorizontalScore score={56} label={'License'} />
-          <HorizontalScore score={23} label={'Security'} />
-          <HorizontalScore score={78} label={'Legal'} />
+          {/* 
+          We have the following
+          "checks": {
+              "Maintained": 0,
+              "Code-Review": 0,
+              "CII-Best-Practices": 0,
+              "Signed-Releases": -1,
+              "License": 0,
+              "Dangerous-Workflow": -1,
+              "Token-Permissions": -1,
+              "Packaging": -1,
+              "SAST": 0,
+              "Branch-Protection": 0,
+              "Binary-Artifacts": 10,
+              "Pinned-Dependencies": 10,
+              "Fuzzing": 0,
+              "Vulnerabilities": 10,
+              "Security-Policy": 0
+          }
+          */}
+          {state.checks['CII-Best-Practices'] > 0 && <HorizontalScore score={state.checks['CII-Best-Practices'] * 10} label={'Best Practices'} />} 
+          {state.checks['License'] > 0 && <HorizontalScore score={state.checks['License'] * 10} label={'License'} />}
+          {state.checks['Vulnerabilities'] > 0 && <HorizontalScore score={state.checks['Vulnerabilities'] * 10} label={'Vulnerabilities'} />}
         </div>
       </div>
     </div>

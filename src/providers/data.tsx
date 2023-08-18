@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState, useContext } from 'react'
 
 type GenericState<T = Record<string, any>> = Loading<T> | Loaded<T> | Error
 
@@ -19,6 +19,7 @@ export interface RepositoryInfoStatus {
 }
 export interface Excerpt {
   description: string;
+  checks: Record<string, number>
 }
 
 export interface Details {

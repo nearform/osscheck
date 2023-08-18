@@ -9,7 +9,8 @@ const levels = {
   0: 'bg-red-400',
   1: 'bg-orange-400',
   2: 'bg-yellow-400',
-  3: 'bg-emerald-400'
+  3: 'bg-emerald-400',
+  4: 'bg-emerald-600'
 }
 
 export default function HorizontalScore({ score, label }: Score) {
