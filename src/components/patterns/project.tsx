@@ -36,7 +36,7 @@ export default function Project({ repo }: Props) {
             </div>
           </div> */}
           <div className="text-gray-400 text-xs font-normal leading-none italic">
-            Updated 5hrs ago ({state.updatedAt})
+            Updated {formatDuration(state.updatedAt)}
           </div>
         </div>
         <div className="justify-start items-center gap-1 inline-flex">
@@ -49,7 +49,7 @@ export default function Project({ repo }: Props) {
               {/* TODO get the org name from data  */}
             </div>
             <div className="text-gray-400 text-xs font-normal leading-none italic">
-              Added 6th April 2022
+              Added {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full'}).format(new Date(state.createdAt))}
             </div>
           </div>
         </div>
@@ -109,11 +109,35 @@ export default function Project({ repo }: Props) {
               "Security-Policy": 0
           }
           */}
-          {state.checks['CII-Best-Practices'] > 0 && <HorizontalScore score={state.checks['CII-Best-Practices'] * 10} label={'Best Practices'} />} 
+          {state.checks['CII-Best-Practices'] > 0 && <HorizontalScore score={state.checks['CII-Best-Practices'] * 10} label={'Best Practices'} />}
           {state.checks['License'] > 0 && <HorizontalScore score={state.checks['License'] * 10} label={'License'} />}
           {state.checks['Vulnerabilities'] > 0 && <HorizontalScore score={state.checks['Vulnerabilities'] * 10} label={'Vulnerabilities'} />}
         </div>
       </div>
     </div>
   )
+}
+
+// TODO improve this, maybe use lib
+function formatDuration(time: string) {
+  const date = new Date(time);
+  const duration = (Date.now() - date.getTime()) / 1000;
+
+  const buckets = {
+    seconds: 0,
+    minutes: 60,
+    hours: 60 * 60,
+    days: 60 * 60 * 24,
+    weeks: 60 * 60 * 24 * 7,
+    "a long time ago": 60 * 60 * 24 * 7 * 30
+  }
+
+  const keys = Object.keys(buckets)
+  for (let i = 1; i< keys.length; i += 1) {
+    if (duration < buckets[keys[i]]) {
+      return `${Math.round(duration / buckets[keys[i-1]])} ${keys[i -1]} ago`
+    }
+  }
+
+  return "a long time ago"
 }

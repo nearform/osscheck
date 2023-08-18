@@ -26,8 +26,7 @@ export default function HomeRoute() {
     case 'loading':
       return (<div>Loading</div>)
     case 'loaded':
-      const { data: { repos } } = lazyData
-      const uiState = prepareUiState({ repos, term, limit, sort })
+      const uiState = prepareUiState({ repos: lazyData.data.repos, term, limit, sort })
 
       return (
         <div className="flex">
@@ -41,7 +40,7 @@ export default function HomeRoute() {
                   Projects
                 </div>
                 <div className="text-gray-400 text-xs font-normal leading-none">
-                  {uiState.totalNumRepos} Results
+                  {uiState.totalFilteredRepos} Results
                 </div>
               </div>
               <div className="justify-start items-center gap-6 flex">
@@ -129,15 +128,15 @@ export default function HomeRoute() {
 
 function prepareUiState({ repos, term, limit, sort }: { repos: Repo[] } & Pick<UiState, 'term' | 'limit' | 'sort'>) {
   const pageIndex = 0 // TODO
+  const filteredRepos = [
+    filterByScore(0, 10),
+    searchRepos(term),
+    sortRepos(sort),
+  ].reduce((value, cb) => cb(value), repos)
 
   return {
-    totalNumRepos: repos.length,
-    repos: [
-      filterByScore(0, 10),
-      searchRepos(term),
-      sortRepos(sort),
-      paginateRepos(limit, pageIndex)
-    ].reduce((value, cb) => cb(value), repos)
+    totalFilteredRepos: filteredRepos.length,
+    repos: paginateRepos(limit, pageIndex)(filteredRepos)
   }
 }
 
