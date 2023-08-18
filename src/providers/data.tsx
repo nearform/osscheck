@@ -10,18 +10,18 @@ export interface Repo {
 type State = GenericState<{ repos: Repo[] }>;
 type GitHubId = string;
 type DateIsoString = string;
-interface RepositoryInfoStatus {
+export interface RepositoryInfoStatus {
   id: GitHubId;
   name: string;
   rating: null | number;
   createdAt: DateIsoString;
   updatedAt: DateIsoString;
 }
-interface Excerpt {
-  // TODO
+export interface Excerpt {
+  description: string;
 }
 
-interface Details {
+export interface Details {
   // TODO
 }
 
@@ -40,7 +40,7 @@ interface Error {
 const DataContext = createContext<State>({
   state: 'loading'
 })
-const Data = (props: { children: React.ReactNode }) => {
+const Data = (props: { children: React.ReactNode }): React.JSX.Element => {
   let state: State, setState: React.Dispatch<React.SetStateAction<State>>;
 
   const initState = lazyLoader<{ repos: Repo[] }>(
@@ -120,7 +120,7 @@ function lazyLoader<T>(
 
             onUpdate({
               state: 'error',
-              message: 'Unable to load data'// TODO error codes? 
+              message: 'Unable to load data'
             })
           }))
       }
@@ -130,9 +130,9 @@ function lazyLoader<T>(
   });
 }
 
-function updateRepoState<T = any>(repo: Repo, key: string, newState: T, setState: React.Dispatch<React.SetStateAction<State>>) {
+function updateRepoState<T = any>(repo: Repo, key: string, newState: T, setState: React.Dispatch<React.SetStateAction<State>>): void {
   setState((prevState) => {
-    // On error and loading states there is no data to update
+    // On 'error' and 'loading' states there is no data to update
     if (prevState.state !== 'loaded') {
       return prevState;
     }

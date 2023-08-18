@@ -13,7 +13,7 @@ export enum Level {
   'Sandbox' = 'Sandbox',
 }
 
-interface State {
+export interface State {
   limit: number;
   sort: Sort;
   term: string;

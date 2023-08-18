@@ -1,22 +1,32 @@
 import React from 'react'
 import ProjectLogo from '../primitives/project-logo'
 import HorizontalScore from '../primitives/horizontal-score'
-import type { Repo } from '../../providers/data'
+import type { Repo, RepositoryInfoStatus, Excerpt } from '../../providers/data'
 
 type Props = {
   repo: Repo
 }
 
-export default function Project({repo}: Props) {
+export default function Project({ repo }: Props) {
   // TODO link to page details
+  // import { Link } from 'react-router-dom'
   // <Link to={`/repo/${repo.name}`} key={repo.id} className="group"></Link>
+  let state: RepositoryInfoStatus & Excerpt
+  if (repo.excerpt.state === 'loaded') {
+    state = {
+      ...repo.index,
+      ...repo.excerpt.data
+    }
+  } else {
+    return (<div>loading</div>) // TODO  switch case and propper handling
+  }
   return (
     <div className="w-full pl-6 pr-8 pt-7 pb-8 bg-white rounded-2xl flex-col justify-start items-start gap-6 inline-flex group-hover:shadow-lg transition-shadow duration-300">
       <div className="self-stretch flex-col justify-start items-start gap-3 flex">
         <div className="justify-start items-center gap-4 inline-flex">
           <ProjectLogo />
           <div className="text-gray-700 text-2xl font-semibold leading-9">
-            {repo.name}
+            {state.name}
           </div>
         </div>
         <div className="justify-start items-center gap-2 inline-flex">
@@ -26,7 +36,7 @@ export default function Project({repo}: Props) {
             </div>
           </div> */}
           <div className="text-gray-400 text-xs font-normal leading-none italic">
-            Updated 5hrs ago ({repo.updatedAt})
+            Updated 5hrs ago ({state.updatedAt})
           </div>
         </div>
         <div className="justify-start items-center gap-1 inline-flex">
@@ -35,7 +45,7 @@ export default function Project({repo}: Props) {
           </div>
           <div className="justify-start items-baseline gap-2 flex">
             <div className="text-violet-900 text-sm font-medium leading-tight">
-              <a href={`https://github.com/nearform/${repo.name}`}>Github</a> 
+              <a href={`https://github.com/nearform/${state.name}`}>Github</a>
               {/* TODO get the org name from data  */}
             </div>
             <div className="text-gray-400 text-xs font-normal leading-none italic">
@@ -44,8 +54,7 @@ export default function Project({repo}: Props) {
           </div>
         </div>
         <div className="self-stretch text-gray-500 text-sm font-normal leading-tight">
-          Lorem ipsum dolor sit amet consectetur. Nunc quis orci scelerisque
-          egestas et egestas amet nibh elementum.
+          {state.description}
         </div>
       </div>
       <div className="flex flex-1 w-full items-center">
