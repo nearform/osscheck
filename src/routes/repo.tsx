@@ -30,7 +30,7 @@ export default function RepoRoute() {
 
   if (data.state === 'loading') {
     return (
-      <div role="status" className='mt-12 mx-auto pt-12'>
+      <div role="status" className="mt-12 mx-auto pt-12">
         <svg
           aria-hidden="true"
           className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

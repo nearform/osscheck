@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext } from 'react'
 
 export enum Sort {
-  'alphabetical_asc' = 'Alphabetical (A-Z)', 
-  'alphabetical_desc' = 'Alphabetical (Z-A)', 
+  'alphabetical_asc' = 'Alphabetical (A-Z)',
+  'alphabetical_desc' = 'Alphabetical (Z-A)',
   'score_asc' = 'Score (High - Low)',
   'score_desc' = 'Score (Low - High)'
 }
@@ -10,14 +10,23 @@ export enum Sort {
 export enum Level {
   'Graduated' = 'Graduated',
   'Incubating' = 'Incubating',
-  'Sandbox' = 'Sandbox',
+  'Sandbox' = 'Sandbox'
+}
+
+export enum RatingFilter {
+  TOP = '100-75',
+  MIDDLE = '74-50',
+  LOWER = '49-25',
+  BOTTOM = '24-0'
 }
 
 export interface State {
-  limit: number;
-  sort: Sort;
-  term: string;
-  rating: number;
+  limit: number
+  sort: Sort
+  term: string
+  rating: number
+  pageIndex: number
+  ratingFilter: RatingFilter[]
 }
 
 interface UIContextValue extends State {
@@ -25,10 +34,12 @@ interface UIContextValue extends State {
 }
 
 const initialState = {
-  limit: 20,
-  sort: Sort.alphabetical_asc,
+  limit: 10,
+  sort: Sort.score_asc,
   term: '',
-  rating: 0
+  rating: 0,
+  pageIndex: 0,
+  ratingFilter:  ['100-75', '74-50', '49-25', '24-0'] as RatingFilter[]
 }
 
 export const UIContext = createContext(initialState as UIContextValue)

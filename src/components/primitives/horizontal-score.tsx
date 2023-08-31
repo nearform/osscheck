@@ -30,7 +30,11 @@ export default function HorizontalScore({ score, label }: Score) {
           {label}
         </div>
       ) : null}
-      <div className={`flex-1 flex items-center ${label ? 'col-span-2' : 'col-span-3'} space-x-2`}>
+      <div
+        className={`flex-1 flex items-center ${
+          label ? 'col-span-2' : 'col-span-3'
+        } space-x-2`}
+      >
         <div className="text-gray-700 text-xs font-semibold uppercase leading-none">
           {score}
         </div>

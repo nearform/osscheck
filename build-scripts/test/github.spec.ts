@@ -17,6 +17,7 @@ test('it returns an async iterator', async t => {
                                     createdAt: "2016-10-11T10:00:28Z",
                                     updatedAt: "2023-01-19T17:18:22Z",
                                     forkCount: 17,
+                                    openGraphImageUrl: "https://opengraph.githubassets.com/d6ca83ce353f58e458237750ad362fe28c2556681915b4c0754d8109843ca422/nearform/k8s-security-monitoring",
                                     hasIssuesEnabled: true,
                                     homepageUrl: null,
                                     issues: {
@@ -78,6 +79,7 @@ test('it returns an async iterator', async t => {
             createdAt: "2016-10-11T10:00:28Z",
             updatedAt: "2023-01-19T17:18:22Z",
             forkCount: 17,
+            openGraphImageUrl: "https://opengraph.githubassets.com/d6ca83ce353f58e458237750ad362fe28c2556681915b4c0754d8109843ca422/nearform/k8s-security-monitoring",
             hasIssuesEnabled: true,
             homepageUrl: null,
             issues: {
