@@ -9,7 +9,8 @@ const levels = {
   0: 'bg-red-400',
   1: 'bg-orange-400',
   2: 'bg-yellow-400',
-  3: 'bg-emerald-400'
+  3: 'bg-emerald-400',
+  4: 'bg-emerald-600'
 }
 
 export default function HorizontalScore({ score, label }: Score) {
@@ -29,7 +30,11 @@ export default function HorizontalScore({ score, label }: Score) {
           {label}
         </div>
       ) : null}
-      <div className={`flex-1 flex items-center ${label ? 'col-span-2' : 'col-span-3'} space-x-2`}>
+      <div
+        className={`flex-1 flex items-center ${
+          label ? 'col-span-2' : 'col-span-3'
+        } space-x-2`}
+      >
         <div className="text-gray-700 text-xs font-semibold uppercase leading-none">
           {score}
         </div>
