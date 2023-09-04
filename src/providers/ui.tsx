@@ -26,6 +26,7 @@ export interface State {
   term: string
   rating: number
   pageIndex: number
+  activeFilter: boolean
   ratingFilter: RatingFilter[]
 }
 
@@ -39,6 +40,7 @@ const initialState = {
   term: '',
   rating: 0,
   pageIndex: 0,
+  activeFilter: false,
   ratingFilter:  ['100-75', '74-50', '49-25', '24-0'] as RatingFilter[]
 }
 

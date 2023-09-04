@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react'
 
-type GenericState<T = Record<string, any>> = Loading<T> | Loaded<T> | Error
+export type GenericState<T = Record<string, any>> = Loading<T> | Loaded<T> | Error
 
 export interface Repo {
   index: RepositoryInfoStatus
@@ -13,6 +13,17 @@ type State = GenericState<{ repos: Repo[] }>
 type GitHubId = string
 
 type DateIsoString = string
+
+export type Check = {
+  details: string[] | null
+  name: string
+  score: number
+  reason: string | null
+  documentation: {
+    url: string
+    short: string
+  }
+}
 
 export interface RepositoryInfoStatus {
   id: GitHubId
@@ -29,7 +40,24 @@ export interface Excerpt {
 }
 
 export interface Details {
-  // TODO
+  id: GitHubId
+  name: string
+  description: string
+  createdAt: string
+  updatedAt: string
+  forkCount: number
+  hasIssuesEnabled: boolean
+  homepageUrl: string | null
+  openGraphImageUrl: string | null
+  score: number | null
+  issues: {
+    totalCount: number
+  } | null
+  licenseInfo: {
+    key: string
+    name: string
+  }
+  checks: Check[]
 }
 
 interface Loading<T = Record<string, any>> {

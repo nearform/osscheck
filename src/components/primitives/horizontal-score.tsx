@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { Check } from '../../providers/data'
 
 type Score = {
-  score: number
+  checks: { [key: string]: number } | Check[]
+  checkKey: string
   label?: string
 }
 
@@ -13,7 +15,7 @@ const levels = {
   4: 'bg-emerald-600'
 }
 
-export default function HorizontalScore({ score, label }: Score) {
+export default function HorizontalScore({ checkKey, checks, label }: Score) {
   const [show, setShow] = useState(false)
   useEffect(() => {
     setTimeout(() => {
@@ -21,12 +23,26 @@ export default function HorizontalScore({ score, label }: Score) {
     }, 100)
   }, [])
 
-  const level = Math.floor(score / 25)
+  const target = Array.isArray(checks)
+    ? checks.find(x => x.name === checkKey)
+    : checks[checkKey]
+
+  if (!target) return null
+
+  const score =
+    target && (target as Check).score
+      ? (target as Check).score * 10
+      : target
+      ? (target as number) * 10
+      : 0
+
+  const formattedScore = isNaN(score) || score < 0 ? 0 : score
+  const level = Math.floor(formattedScore / 25)
 
   return (
     <div className="grid grid-cols-3 gap-x-4">
       {label ? (
-        <div className="text-gray-500 text-[11px] uppercase leading-none">
+        <div className="text-gray-500 text-[11px] uppercase leading-none break-words">
           {label}
         </div>
       ) : null}
@@ -36,13 +52,13 @@ export default function HorizontalScore({ score, label }: Score) {
         } space-x-2`}
       >
         <div className="text-gray-700 text-xs font-semibold uppercase leading-none">
-          {score}
+          {formattedScore}
         </div>
         <div className="w-full h-2 flex-1 relative">
           <div className="absolute inset-0 h-2 bg-gray-100 rounded z-0" />
           <div
             style={{
-              width: show ? `${score}%` : '0%'
+              width: show ? `${formattedScore}%` : '0%'
             }}
             className={`absolute top-0 left-0 bottom-0 h-2 ${levels[level]} rounded z-10 transition-all duration-500`}
           />
