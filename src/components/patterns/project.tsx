@@ -79,7 +79,7 @@ export default function Project({ repo, target, nested }: Props) {
             </div>
             <div className="justify-start items-baseline gap-2 flex">
               <div className="text-violet-900 text-sm font-medium leading-tight">
-                <a href={`https://github.com/nearform/${state.name}`}>Github</a>
+                <a href={`https://github.com/${state.organization}/${state.name}`}>Github</a>
                 {/* TODO get the org name from data  */}
               </div>
               <div className="text-gray-400 text-xs font-normal leading-none italic">

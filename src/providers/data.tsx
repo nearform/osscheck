@@ -28,6 +28,7 @@ export type Check = {
 export interface RepositoryInfoStatus {
   id: GitHubId
   name: string
+  organization: string
   rating: null | number
   openGraphImageUrl: null | string
   createdAt: DateIsoString

@@ -10,7 +10,7 @@ program
     '-p, --path <string>',
     'The path where the files should be saved.'
   )
-  .requiredOption('-o, --org <string>', 'The github organisation.')
+  .requiredOption('-o, --org <string[]>', 'Array of github organisations to retrieve repositories from.')
   .requiredOption(
     '--gh_priv_key <string>',
     'The github private key for the app.'
@@ -31,50 +31,58 @@ type DateIsoString = string
 interface RepositoryInfoStatus {
   id: RepoId
   name: string
+  organization: string
   openGraphImageUrl: string
   rating: number | null
   createdAt: DateIsoString
   updatedAt: DateIsoString
 }
 
+
 ;(async (): Promise<void> => {
   await ensureFolderExists(options.path)
-
   const index: RepositoryInfoStatus[] = [] // main doc, used for searches & pagination
-  const queryGitHubArgs = {
-    org: options.org,
-    itemsPerPage: 10,
-    gh_priv_key: options.gh_priv_key,
-    gh_app_id: options.gh_app_id,
-    gh_app_install_id: options.gh_app_install_id
-  }
+  const orgs = options.org.split(',')
 
-  for await (const gitHubItem of queryGitHub(queryGitHubArgs)) {
-    const scorecard = await querySecurityScorecard({
-      platform: 'github.com',
-      org: options.org,
-      repo: gitHubItem.name
-    })
+  for (const org of orgs) {
+    const queryGitHubArgs = {
+      org,
+      itemsPerPage: 10,
+      gh_priv_key: options.gh_priv_key,
+      gh_app_id: options.gh_app_id,
+      gh_app_install_id: options.gh_app_install_id
+    }
 
-    index.push({
-      id: gitHubItem.id,
-      name: gitHubItem.name,
-      openGraphImageUrl: gitHubItem.openGraphImageUrl,
-      rating: scorecard.score,
-      createdAt: gitHubItem.createdAt,
-      updatedAt: gitHubItem.updatedAt
-    })
-
-    await Promise.all([
-      saveJson(`${options.path}/${gitHubItem.id}.excerpt.json`, {
-        description: gitHubItem.description,
-        checks: prepareChecks(scorecard.checks || [])
-      }),
-      saveJson(`${options.path}/${gitHubItem.id}.details.json`, {
-        ...gitHubItem, // TODO cleanup schema
-        ...scorecard
+    for await (const gitHubItem of queryGitHub(queryGitHubArgs)) {
+      const scorecard = await querySecurityScorecard({
+        platform: 'github.com',
+        org,
+        repo: gitHubItem.name
       })
-    ])
+
+      if (scorecard && scorecard.score !== null) {
+        index.push({
+          id: gitHubItem.id,
+          organization: org,
+          name: gitHubItem.name,
+          openGraphImageUrl: gitHubItem.openGraphImageUrl,
+          rating: scorecard.score,
+          createdAt: gitHubItem.createdAt,
+          updatedAt: gitHubItem.updatedAt
+        })
+
+        await Promise.all([
+          saveJson(`${options.path}/${gitHubItem.id}.excerpt.json`, {
+            description: gitHubItem.description,
+            checks: prepareChecks(scorecard.checks || [])
+          }),
+          saveJson(`${options.path}/${gitHubItem.id}.details.json`, {
+            ...gitHubItem,
+            ...scorecard
+          })
+        ])
+      }
+    }
   }
 
   await saveJson(`${options.path}/index.json`, index)
