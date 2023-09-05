@@ -17,15 +17,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nearform/osshealth.git"
+    "url": "git+https://github.com/nearform/osscheck.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nearform/osshealth/issues"
+    "url": "https://github.com/nearform/osscheck/issues"
   },
-  "homepage": "https://nearform.github.io/osshealth/",
+  "homepage": "https://nearform.github.io/osscheck/",
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@tailwindcss/typography": "^0.5.9",
