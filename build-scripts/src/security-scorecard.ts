@@ -34,7 +34,7 @@ export default async function queryApiSecurity({
   checks: ReqResponse['checks']
   score: number | null
 }> {
-  return fetch(
+  const req = await fetch(
     `https://api.securityscorecards.dev/projects/${platform}/${org}/${repo}`,
     {
       method: 'GET',
@@ -43,9 +43,9 @@ export default async function queryApiSecurity({
       }
     }
   )
-    .then(response =>
-      response.status === 200 ? response.json() : { checks: [], score: null }
-    )
-    .then(data => reqResponseSchema.parse(data))
-    .then(({ checks, score }) => ({ checks, score }))
+  if (req && req.status === 200) {
+    const json = await req.json()
+    return reqResponseSchema.parse(json)
+  }
+  return { checks: [], score: null }
 }
