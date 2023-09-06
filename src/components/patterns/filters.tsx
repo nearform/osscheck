@@ -1,8 +1,6 @@
 import React from 'react'
 import { RatingFilter, useUI } from '../../providers/ui'
 
-// const maturity = ['graduated', 'incubating', 'sandbox']
-
 const rating = ['100-75', '74-50', '49-25', '24-0']
 
 export default function Filters() {
@@ -26,20 +24,6 @@ export default function Filters() {
         Filters
       </div>
       <div className="flex-col justify-start items-start gap-6 flex">
-        {/* 
-        <div className="flex-col justify-start items-start gap-3 flex">
-          <div className="text-violet-900 text-sm font-semibold leading-tight">Maturity Level</div>
-          {maturity.map((m, i) => {
-            return (
-              <div className="flex items-center" key={`maturity-${m}`}>
-                <input id={m} type="checkbox" value="" className="w-4 h-4 p-2.5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                <label htmlFor={m} className="ml-2 text-sm font-medium leading-none capitalize">{m}</label>
-              </div>
-            )
-          })}
-        </div> 
-        */}
-
         <div className="flex-col justify-start items-start gap-3 flex">
           <div className="text-violet-900 text-sm font-semibold leading-tight">
             Rating
@@ -66,16 +50,7 @@ export default function Filters() {
           })}
         </div>
 
-        {/* 
-        <div className="flex-col justify-start items-start gap-3 flex">
-          <div className="text-violet-900 text-sm font-semibold leading-tight">Checks</div>
-          <button className="px-3 py-2 rounded-lg border border-gray-200 justify-center items-center gap-2 inline-flex focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800" type="button">
-            <div className="text-gray-700 text-sm font-medium leading-tight">Add Filter</div>
-          </button>
-        </div> 
-        */}
-
-        <div className="flex-col justify-start items-start gap-3 flex">
+        {/* <div className="flex-col justify-start items-start gap-3 flex">
           <div className="text-violet-900 text-sm font-semibold leading-tight">
             Added
           </div>
@@ -132,7 +107,7 @@ export default function Filters() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
