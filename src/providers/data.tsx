@@ -1,6 +1,9 @@
 import React, { createContext, useState, useContext } from 'react'
 
-export type GenericState<T = Record<string, any>> = Loading<T> | Loaded<T> | Error
+export type GenericState<T = Record<string, any>> =
+  | Loading<T>
+  | Loaded<T>
+  | Error
 
 export interface Repo {
   index: RepositoryInfoStatus
@@ -80,8 +83,6 @@ const DataContext = createContext<State>({
 })
 
 const Data = (props: { children: React.ReactNode }): React.JSX.Element => {
-  let state: State, setState: React.Dispatch<React.SetStateAction<State>>
-
   const initState = lazyLoader<{ repos: Repo[] }>(
     async () => {
       const data = await loadData<RepositoryInfoStatus[]>('data/index.json')
@@ -120,9 +121,7 @@ const Data = (props: { children: React.ReactNode }): React.JSX.Element => {
     }
   )
 
-  const x = useState<State>(initState)
-  state = x[0]
-  setState = x[1]
+  const [state, setState] = useState<State>(initState)
 
   return (
     <DataContext.Provider value={state}>{props.children}</DataContext.Provider>
@@ -177,7 +176,6 @@ function lazyLoader<T>(
             })
           })
       }
-
       return prop === 'state' ? 'loading' : undefined
     }
   })

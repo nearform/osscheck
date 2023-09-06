@@ -52,7 +52,7 @@ export default function HomeRoute() {
           </svg>
           <span className="sr-only">Loading...</span>
         </div>
-        )
+      )
     case 'loaded':
       const uiState = prepareUiState({
         repos: lazyData.data.repos,
@@ -166,9 +166,16 @@ export default function HomeRoute() {
                 role="list"
                 className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-2 xl:gap-x-8 mb-6"
               >
-                {uiState.repos.map(repo => (
-                  <Project target="excerpt" repo={repo} key={repo.index.id} nested />
-                ))}
+                {uiState.repos.map(repo => {
+                  return (
+                    <Project
+                      target="details"
+                      repo={repo}
+                      key={repo.index.id}
+                      nested
+                    />
+                  )
+                })}
               </ul>
 
               <nav
