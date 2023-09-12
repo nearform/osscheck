@@ -19,39 +19,40 @@ export default function Filters() {
   }
 
   return (
-    <div className="w-60 mt-6 px-6 pt-3 pb-6 bg-white rounded-2xl flex-col justify-start items-start gap-4 inline-flex sticky top-6 left-0">
-      <div className="text-violet-900 text-2xl font-semibold leading-9">
-        Filters
-      </div>
-      <div className="flex-col justify-start items-start gap-6 flex">
-        <div className="flex-col justify-start items-start gap-3 flex">
-          <div className="text-violet-900 text-sm font-semibold leading-tight">
-            Rating
-          </div>
-          {rating.map((m, i) => {
-            return (
-              <div className="flex items-center" key={`rating-${m}`}>
-                <input
-                  id={m}
-                  type="checkbox"
-                  value={m}
-                  onChange={updateRating}
-                  checked={ratingFilter.includes(m as RatingFilter)}
-                  className="w-4 h-4 p-2.5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor={m}
-                  className="ml-2 text-sm font-medium leading-none capitalize"
-                >
-                  {m}
-                </label>
-              </div>
-            )
-          })}
+    <div className="w-60 mt-6 flex-col justify-start items-start gap-4 inline-flex sticky top-6 left-0 flex-shrink">
+      <div className="px-6 pt-3 pb-6 bg-white rounded-2xl w-full">
+        <div className="text-[#3E238B] text-2xl font-semibold leading-9">
+          Filters
         </div>
+        <div className="flex-col justify-start items-start gap-6 flex mt-4">
+          <div className="flex-col justify-start items-start gap-3 flex">
+            <div className="text-[#3E238B] text-sm font-semibold leading-tight">
+              Rating
+            </div>
+            {rating.map((m, i) => {
+              return (
+                <div className="flex items-center" key={`rating-${m}`}>
+                  <input
+                    id={m}
+                    type="checkbox"
+                    value={m}
+                    onChange={updateRating}
+                    checked={ratingFilter.includes(m as RatingFilter)}
+                    className="w-4 h-4 p-2 text-[#3E238B] bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-900 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    htmlFor={m}
+                    className="ml-2 text-sm font-medium leading-none capitalize"
+                  >
+                    {m}
+                  </label>
+                </div>
+              )
+            })}
+          </div>
 
-        {/* <div className="flex-col justify-start items-start gap-3 flex">
-          <div className="text-violet-900 text-sm font-semibold leading-tight">
+          {/* <div className="flex-col justify-start items-start gap-3 flex">
+          <div className="text-[#3E238B] text-sm font-semibold leading-tight">
             Added
           </div>
           <div
@@ -108,6 +109,7 @@ export default function Filters() {
             </div>
           </div>
         </div> */}
+        </div>
       </div>
     </div>
   )
