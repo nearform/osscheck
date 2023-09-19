@@ -81,14 +81,14 @@ export default function HomeRoute() {
                 </div>
                 <div className="justify-start items-center gap-6 flex pt-2 md:pt-0">
                   <div className="justify-start items-center gap-2 flex">
+                    <p className="text-gray-700 text-sm font-semibold leading-tight">
+                      Sort by
+                    </p>
                     <Dropdown
                       inline
                       label={
-                        <p>
-                          Sort by{' '}
-                          <span className="text-sm font-normal leading-tight pl-1">
-                            {sort}
-                          </span>
+                        <p className="text-sm font-normal leading-tight">
+                          {sort}
                         </p>
                       }
                       size="xs"
@@ -135,14 +135,14 @@ export default function HomeRoute() {
                     </Dropdown>
                   </div>
                   <div className="justify-start items-center gap-2 flex">
+                    <p className="text-gray-700 text-sm font-semibold leading-tight">
+                      Show
+                    </p>
                     <Dropdown
                       inline
                       label={
-                        <p>
-                          Show{' '}
-                          <span className="text-sm font-normal leading-tight pl-1">
-                            {limit}
-                          </span>
+                        <p className="text-sm font-normal leading-tight">
+                          {limit}
                         </p>
                       }
                       size="sm"
