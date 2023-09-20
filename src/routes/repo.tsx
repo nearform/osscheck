@@ -54,29 +54,30 @@ export default function RepoRoute() {
       }
 
       return (
-        <section className="flex flex-col w-full mt-6 space-y-6 pb-12 px-4 md:px-0">
-          <div className="w-full h-14 px-6 bg-white rounded-2xl justify-start items-center gap-1 inline-flex">
-            <Link
-              className="relative justify-start items-center gap-1 inline-flex"
-              to="/"
-            >
-              <div className="w-6 h-6 relative">
-                <img src="./icons/arrow-left-outline.svg" />
-              </div>
-              <div className="text-gray-700 text-base font-bold leading-normal">
-                Back
-              </div>
-            </Link>
-          </div>
-
-          <Project
-            repo={target}
-            target="details"
-            key={target.index.id}
-            nested={false}
-          />
-          <Checks details={target.details} />
-        </section>
+        <div className="w-full max-w-[888px] mx-auto">
+          <section className="flex flex-col w-full mt-6 space-y-6 pb-12 px-4 md:px-0">
+            <div className="w-full h-14 px-6 bg-white rounded-2xl justify-start items-center gap-1 inline-flex">
+              <Link
+                className="relative justify-start items-center gap-1 inline-flex"
+                to="/"
+              >
+                <div className="w-6 h-6 relative">
+                  <img src="./icons/arrow-left-outline.svg" />
+                </div>
+                <div className="text-gray-700 text-base font-bold leading-normal">
+                  Back
+                </div>
+              </Link>
+            </div>
+            <Project
+              repo={target}
+              target="details"
+              key={target.index.id}
+              nested={false}
+            />
+            <Checks details={target.details} />
+          </section>
+        </div>
       )
   }
 }
@@ -98,7 +99,7 @@ function Checks({ details }: { details: GenericState<Details> }) {
                     <Disclosure.Button className="block text-left w-full">
                       <div
                         key={check.name}
-                        className="p-2 md:p-6 bg-gray-50 rounded-lg flex-col justify-start items-start gap-6 inline-flex w-full"
+                        className="p-2 md:p-6 bg-gray-100 rounded-lg flex-col justify-start items-start gap-6 inline-flex w-full"
                       >
                         <div className="self-stretch justify-start items-center gap-8 inline-flex">
                           <div className="grow shrink basis-0 h-4 justify-start items-center gap-4 flex">
@@ -131,12 +132,16 @@ function Checks({ details }: { details: GenericState<Details> }) {
                         </div>
                       </div>
                     </Disclosure.Button>
-                    <Disclosure.Panel className="px-2 md:px-4 py-3 md:py-6 text-xs md:text-sm text-gray-500 bg-gray-50 rounded-b-2xl">
+                    <Disclosure.Panel className="px-2 md:px-4 pb-3 md:pb-6 text-xs md:text-sm text-gray-500 bg-gray-100 rounded-b-2xl">
                       <div className="bg-white rounded-2xl p-2 md:p-6 space-y-2">
                         {check.documentation.short ? (
-                          <p className='text-gray-600 font-semibold'>{check.documentation.short}</p>
+                          <p className="text-gray-600 font-semibold">
+                            {check.documentation.short}
+                          </p>
                         ) : null}
-                        {check.reason ? <p className="capitalize">{check.reason}</p> : null}
+                        {check.reason ? (
+                          <p className="capitalize">{check.reason}</p>
+                        ) : null}
                         {check.details && check.details.length ? (
                           <>
                             <ul>

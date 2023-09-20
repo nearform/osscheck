@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useUI } from '../../providers/ui'
+import { ReactComponent as Search } from '../../../public/icons/search-outline.svg'
+import { ReactComponent as Filter } from '../../../public/icons/filter.svg'
+import { ReactComponent as Github } from '../../../public/icons/github.svg'
 
 export const Header = function Header() {
   const { term, activeFilter, setUiState } = useUI()
@@ -48,60 +51,42 @@ export const Header = function Header() {
               setUiState(s => ({ ...s, activeFilter: !activeFilter }))
             }
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="text-white w-6 h-6"
-              viewBox="0 0 24 24"
-            >
-              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
-            </svg>
+            <Filter />
           </button>
           <button type="button" onClick={() => setSearch(!search)}>
-            <svg
-              className="text-white w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
+            <Search />
           </button>
         </div>
-        <div
-          className={`md:w-72 bg-gray-100 md:bg-transparent md:px-0 md:py-3 ${
-            search ? 'flex  pt-4 px-4' : 'h-0 overflow-hidden p-0'
-          }`}
-        >
-          <div className="relative w-full">
-            <svg
-              className="text-gray-500 w-5 h-5 absolute top-3.5 left-3"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-            <input
-              type="search"
-              name="term"
-              className="w-full pl-10 pr-2 py-3 bg-gray-50 rounded-lg border border-gray-200 flex-col justify-center items-start gap-2 flex"
-              placeholder="Search"
-              value={term}
-              onChange={e => setUiState(s => ({ ...s, term: e.target.value }))}
-            />
+        <div className='flex flex-row'>
+          <div
+            className={`md:w-72 bg-gray-100 md:bg-transparent md:px-0 md:py-3 ${
+              search ? 'flex  pt-4 px-4' : 'h-0 overflow-hidden p-0'
+            }`}
+          >
+            <div className="relative w-full">
+              <Search
+                className="text-gray-500 w-5 h-5 absolute top-3.5 left-3"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              />
+              <input
+                type="search"
+                name="term"
+                className="w-full pl-10 pr-2 py-3 bg-gray-50 rounded-lg border border-gray-200 flex-col justify-center items-start gap-2 flex"
+                placeholder="Search"
+                value={term}
+                onChange={e =>
+                  setUiState(s => ({ ...s, term: e.target.value }))
+                }
+              />
+            </div>
+          </div>
+          <div className="hidden md:block md:ml-4 md:w-12 md:mr-12">
+            <Github />
           </div>
         </div>
       </div>

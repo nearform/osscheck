@@ -72,7 +72,7 @@ export default function HomeRoute() {
             <div className="pt-4 px-4 md:pt-0 md:px-0 md:mt-6 md:ml-6">
               <div className="w-full px-4 md:px-8 py-3 bg-white rounded-2xl md:justify-between md:items-center gap-2 inline-flex flex-col md:flex-row">
                 <div className="md:justify-start items-center md:items-baseline gap-2 flex justify-between">
-                  <div className="text-violet-900 text-2xl font-semibold leading-9">
+                  <div className="text-[#3E238B] text-2xl font-semibold leading-9">
                     Projects
                   </div>
                   <div className="text-gray-400 text-xs font-normal leading-none">
@@ -81,10 +81,17 @@ export default function HomeRoute() {
                 </div>
                 <div className="justify-start items-center gap-6 flex pt-2 md:pt-0">
                   <div className="justify-start items-center gap-2 flex">
+                    <p className="text-gray-700 text-sm font-semibold leading-tight">
+                      Sort by
+                    </p>
                     <Dropdown
                       inline
-                      label={`Show ${sort}`}
-                      size="sm"
+                      label={
+                        <p className="text-sm font-normal leading-tight">
+                          {sort}
+                        </p>
+                      }
+                      size="xs"
                       theme={customTheme}
                     >
                       <Dropdown.Item
@@ -94,7 +101,7 @@ export default function HomeRoute() {
                             sort: Sort.alphabetical_asc
                           }))
                         }
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         Alphabetical (A-Z)
                       </Dropdown.Item>
@@ -105,7 +112,7 @@ export default function HomeRoute() {
                             sort: Sort.alphabetical_desc
                           }))
                         }
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         Alphabetical (Z-A)
                       </Dropdown.Item>
@@ -113,7 +120,7 @@ export default function HomeRoute() {
                         onClick={() =>
                           setUiState(s => ({ ...s, sort: Sort.score_asc }))
                         }
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         Score (High - Low)
                       </Dropdown.Item>
@@ -121,40 +128,47 @@ export default function HomeRoute() {
                         onClick={() =>
                           setUiState(s => ({ ...s, sort: Sort.score_desc }))
                         }
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         Score (Low - High)
                       </Dropdown.Item>
                     </Dropdown>
                   </div>
                   <div className="justify-start items-center gap-2 flex">
+                    <p className="text-gray-700 text-sm font-semibold leading-tight">
+                      Show
+                    </p>
                     <Dropdown
                       inline
-                      label={`Show ${limit}`}
+                      label={
+                        <p className="text-sm font-normal leading-tight">
+                          {limit}
+                        </p>
+                      }
                       size="sm"
                       theme={customTheme}
                     >
                       <Dropdown.Item
                         onClick={() => setUiState(s => ({ ...s, limit: 10 }))}
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         10
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => setUiState(s => ({ ...s, limit: 20 }))}
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         20
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => setUiState(s => ({ ...s, limit: 40 }))}
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         40
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => setUiState(s => ({ ...s, limit: 60 }))}
-                        className="text-gray-700 text-sm font-normal leading-tight"
+                        className="text-gray-700 text-sm font-normal leading-tight px-4 w-full"
                       >
                         60
                       </Dropdown.Item>
@@ -179,7 +193,7 @@ export default function HomeRoute() {
               </ul>
 
               <nav
-                className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-t-lg"
+                className="flex items-center justify-between border border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg mb-6"
                 aria-label="Pagination"
               >
                 <div className="hidden sm:block">

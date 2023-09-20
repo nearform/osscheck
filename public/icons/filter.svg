@@ -1,12 +1,12 @@
 <svg
-              className="text-white w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               stroke="currentColor"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
+              className="text-white w-6 h-6"
               viewBox="0 0 24 24"
             >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
+              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
             </svg>

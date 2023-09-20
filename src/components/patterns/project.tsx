@@ -49,37 +49,41 @@ export default function Project({ repo, target, nested }: Props) {
 
   const C = () => {
     return (
-      <div className="w-full pb-4 bg-white rounded-2xl flex-col justify-start items-start gap-4 inline-flex group-hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+      <div className="w-full pb-4 bg-white rounded-2xl flex-col justify-start items-start gap-2 inline-flex overflow-hidden">
         <div className="self-stretch flex-col justify-start items-start gap-0 flex">
           <div className="justify-start items-center gap-4 inline-flex pl-6 pr-8 pt-6">
             <ProjectLogo />
-            <div className="text-gray-700 text-2xl font-semibold leading-9">
-              {state.name}
+            <div className="flex flex-col">
+              <div className="text-gray-700 text-2xl font-semibold leading-9">
+                {state.name}
+              </div>
+              <div className="text-gray-400 text-xs font-normal leading-none italic">
+                Updated {formatDuration(state.updatedAt)}
+              </div>
             </div>
           </div>
           {nested && state.openGraphImageUrl ? (
-            <div className="overflow-hidden h-[64px] relative w-full mt-4">
+            <div className="overflow-hidden h-[50px] relative w-full mt-4">
               <img
                 src={state.openGraphImageUrl}
                 alt={state.name}
-                className="absolute bottom-0 transform origin-bottom"
+                className="absolute bottom-[-12px] transform origin-bottom"
               />
             </div>
           ) : null}
         </div>
         <div className="self-stretch flex-col justify-start items-start gap-3 flex pl-6 pr-8">
-          <div className="justify-start items-center gap-2 inline-flex">
-            <div className="text-gray-400 text-xs font-normal leading-none italic">
-              Updated {formatDuration(state.updatedAt)}
-            </div>
-          </div>
           <div className="justify-start items-center gap-1 inline-flex">
             <div className="w-4 h-4 relative">
               <img src="./icons/link.svg" />
             </div>
             <div className="justify-start items-baseline gap-2 flex">
-              <div className="text-violet-900 text-sm font-medium leading-tight">
-                <a href={`https://github.com/${state.organization}/${state.name}`}>Github</a>
+              <div className="text-[#3E238B] text-sm font-medium leading-tight">
+                <a
+                  href={`https://github.com/${state.organization}/${state.name}`}
+                >
+                  Github
+                </a>
                 {/* TODO get the org name from data  */}
               </div>
               <div className="text-gray-400 text-xs font-normal leading-none italic">
@@ -99,7 +103,7 @@ export default function Project({ repo, target, nested }: Props) {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
               <path
                 className="stroke-gray-200"
-                d="M40,90 A40,40 0 1,1 60,90"
+                d="M 30 90 A43 43 0 1 1 70 90"
                 style={{
                   strokeWidth: 5,
                   fill: 'none'
@@ -113,7 +117,7 @@ export default function Project({ repo, target, nested }: Props) {
                   fill: 'none'
                 }}
                 className="stroke-green-400"
-                d="M40,90 A40,40 0 1,1 60,90"
+                d="M 30 90 A43 43 0 1 1 70 90"
               />
             </svg>
             <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
