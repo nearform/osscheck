@@ -86,7 +86,9 @@ export const Header = function Header() {
             </div>
           </div>
           <div className="hidden md:block md:ml-4 md:w-12 md:mr-12">
-            <Github />
+            <a href="https://github.com/nearform/osscheck" target='_blank'>
+              <Github />
+            </a>
           </div>
         </div>
       </div>
