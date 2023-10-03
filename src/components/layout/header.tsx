@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useUI } from '../../providers/ui'
-import { ReactComponent as Search } from '../../../public/icons/search-outline.svg'
-import { ReactComponent as Filter } from '../../../public/icons/filter.svg'
-import { ReactComponent as Github } from '../../../public/icons/github.svg'
+import Search from '../../icons/search-outline.svg?react'
+import Filter from '../../icons/filter.svg?react'
+import Github from '../../icons/github.svg?react'
 
 export const Header = function Header() {
   const { term, activeFilter, setUiState } = useUI()
@@ -57,7 +57,7 @@ export const Header = function Header() {
             <Search />
           </button>
         </div>
-        <div className='flex flex-row'>
+        <div className="flex flex-row">
           <div
             className={`md:w-72 bg-gray-100 md:bg-transparent md:px-0 md:py-3 ${
               search ? 'flex  pt-4 px-4' : 'h-0 overflow-hidden p-0'
@@ -86,7 +86,7 @@ export const Header = function Header() {
             </div>
           </div>
           <div className="hidden md:block md:ml-4 md:w-12 md:mr-12">
-            <a href="https://github.com/nearform/osscheck" target='_blank'>
+            <a href="https://github.com/nearform/osscheck" target="_blank">
               <Github />
             </a>
           </div>

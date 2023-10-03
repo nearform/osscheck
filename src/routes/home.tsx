@@ -200,7 +200,11 @@ export default function HomeRoute() {
                   <p className="text-sm text-gray-700">
                     Showing{' '}
                     <span className="font-medium">
-                      {pageIndex === 0 ? '1' : pageIndex * limit}
+                      {pageIndex === 0
+                        ? '1'
+                        : pageIndex * limit > uiState.repos.length
+                          ? uiState.repos.length
+                          : pageIndex * limit}
                     </span>{' '}
                     to{' '}
                     <span className="font-medium">
@@ -293,13 +297,13 @@ export default function HomeRoute() {
                                 className="h-6 w-6"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                stroke-width="1.5"
+                                strokeWidth="1.5"
                                 stroke="currentColor"
                                 aria-hidden="true"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                   d="M6 18L18 6M6 6l12 12"
                                 />
                               </svg>
@@ -412,8 +416,11 @@ function paginateRepos(
   limit: number,
   pageIndex: number = 0
 ): (repos: Repo[]) => Repo[] {
-  const startIndex = pageIndex * limit
   return (repos: Repo[]): Repo[] => {
+    if (limit > repos.length) {
+      return repos
+    }
+    const startIndex = pageIndex * limit
     return repos.slice(startIndex, startIndex + limit)
   }
 }
