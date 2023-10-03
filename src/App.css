@@ -13,8 +13,8 @@ svg {
 }
 
 path {
-  strokeLinecap: round;
-  strokeWidth: 2;
+  stroke-linecap: round;
+  stroke-width: 2;
 }
 
 path.grey {
