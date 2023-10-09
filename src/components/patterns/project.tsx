@@ -16,6 +16,14 @@ type Props = {
   target: string
 }
 
+const levels = {
+  0: 'stroke-red-500',
+  1: 'stroke-orange-400',
+  2: 'stroke-yellow-300',
+  3: 'stroke-green-400',
+  4: 'stroke-green-400'
+}
+
 export default function Project({ repo, target, nested }: Props) {
   let state: RepositoryInfoStatus & Excerpt & Details
   if (repo[target].state === 'loaded') {
@@ -47,9 +55,21 @@ export default function Project({ repo, target, nested }: Props) {
     )
   }
 
-  const external = (e) => {
-    e.stopPropagation();
+  const external = e => {
+    e.stopPropagation()
   }
+
+  const score = state.rating
+    ? state.rating * 10
+    : state.score
+    ? state.score * 10
+    : 0
+  const formattedScore = isNaN(score) || score < 0 ? 0 : score
+  const level = Math.floor(formattedScore / 25)
+
+  console.log(
+    state.rating ? state.rating * 10 : state.score ? state.score * 10 : '--'
+  )
 
   const C = () => {
     return (
@@ -123,7 +143,7 @@ export default function Project({ repo, target, nested }: Props) {
                   strokeDashoffset: 420 - 230 * ((state.rating || 0) / 10),
                   fill: 'none'
                 }}
-                className="stroke-green-400"
+                className={levels[level]}
                 d="M 30 90 A43 43 0 1 1 70 90"
               />
             </svg>
