@@ -67,12 +67,13 @@ export default function Project({ repo, target, nested }: Props) {
             </div>
           </div>
           {nested && state.openGraphImageUrl ? (
-            <div className="overflow-hidden h-[50px] relative w-full mt-4">
+            <div className="overflow-hidden h-[50px] w-full mt-4 relative">
               <img
                 src={state.openGraphImageUrl}
                 alt={state.name}
                 className="absolute bottom-[-12px] transform origin-bottom"
               />
+              <div className="absolute bg-white right-0 w-16 h-full z-10" />
             </div>
           ) : null}
         </div>
