@@ -39,7 +39,7 @@
     "react-dom": "^18.2.0",
     "react-gauge-component": "^1.1.22",
     "react-router-dom": "^6.16.0",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
