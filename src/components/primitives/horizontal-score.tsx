@@ -12,7 +12,7 @@ const levels = {
   1: 'bg-orange-400',
   2: 'bg-yellow-300',
   3: 'bg-green-400',
-  4: 'bg-green-600'
+  4: 'bg-green-400'
 }
 
 export default function HorizontalScore({ checkKey, checks, label }: Score) {
