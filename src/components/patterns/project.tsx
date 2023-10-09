@@ -47,6 +47,10 @@ export default function Project({ repo, target, nested }: Props) {
     )
   }
 
+  const external = (e) => {
+    e.stopPropagation();
+  }
+
   const C = () => {
     return (
       <div className="w-full pb-4 bg-white rounded-2xl flex-col justify-start items-start gap-2 inline-flex overflow-hidden">
@@ -74,25 +78,26 @@ export default function Project({ repo, target, nested }: Props) {
         </div>
         <div className="self-stretch flex-col justify-start items-start gap-3 flex pl-6 pr-8">
           <div className="justify-start items-center gap-1 inline-flex">
-            <div className="w-4 h-4 relative">
-              <img src="./icons/link.svg" />
-            </div>
-            <div className="justify-start items-baseline gap-2 flex">
-              <div className="text-[#3E238B] text-sm font-medium leading-tight">
-                <a
-                  href={`https://github.com/${state.organization}/${state.name}`}
-                  target="_blank"
-                >
+            <a
+              href={`https://github.com/${state.organization}/${state.name}`}
+              target="_blank"
+              className="justify-start items-center gap-1 inline-flex"
+              onClick={external}
+            >
+              <div className="w-4 h-4 relative">
+                <img src="./icons/link.svg" />
+              </div>
+              <div className="justify-start items-baseline gap-2 flex">
+                <div className="text-[#3E238B] text-sm font-medium leading-tight">
                   Github
-                </a>
-                {/* TODO get the org name from data  */}
+                </div>
               </div>
-              <div className="text-gray-400 text-xs font-normal leading-none italic">
-                Added{' '}
-                {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(
-                  new Date(state.createdAt)
-                )}
-              </div>
+            </a>
+            <div className="text-gray-400 text-xs font-normal leading-none italic">
+              Added{' '}
+              {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(
+                new Date(state.createdAt)
+              )}
             </div>
           </div>
           <div className="self-stretch text-gray-500 text-sm font-normal leading-tight">
