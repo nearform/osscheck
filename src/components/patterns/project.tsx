@@ -81,6 +81,7 @@ export default function Project({ repo, target, nested }: Props) {
               <div className="text-[#3E238B] text-sm font-medium leading-tight">
                 <a
                   href={`https://github.com/${state.organization}/${state.name}`}
+                  target="_blank"
                 >
                   Github
                 </a>
