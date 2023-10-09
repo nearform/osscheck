@@ -67,10 +67,6 @@ export default function Project({ repo, target, nested }: Props) {
   const formattedScore = isNaN(score) || score < 0 ? 0 : score
   const level = Math.floor(formattedScore / 25)
 
-  console.log(
-    state.rating ? state.rating * 10 : state.score ? state.score * 10 : '--'
-  )
-
   const C = () => {
     return (
       <div className="w-full pb-4 bg-white rounded-2xl flex-col justify-start items-start gap-2 inline-flex overflow-hidden">
