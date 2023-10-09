@@ -65,11 +65,11 @@ export default function HomeRoute() {
 
       return (
         <>
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col md:flex-row w-full">
             <div className="hidden md:flex">
               <Filters />
             </div>
-            <div className="pt-4 px-4 md:pt-0 md:px-0 md:mt-6 md:ml-6">
+            <div className="pt-4 px-4 md:pt-0 md:px-0 md:mt-6 md:ml-6 md:w-full md:flex-1">
               <div className="w-full px-4 md:px-8 py-3 bg-white rounded-2xl md:justify-between md:items-center gap-2 inline-flex flex-col md:flex-row">
                 <div className="md:justify-start items-center md:items-baseline gap-2 flex justify-between">
                   <div className="text-[#3E238B] text-2xl font-semibold leading-9">
