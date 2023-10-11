@@ -12,7 +12,7 @@ const levels = {
   1: 'bg-orange-400',
   2: 'bg-yellow-300',
   3: 'bg-green-400',
-  4: 'bg-green-600'
+  4: 'bg-green-400'
 }
 
 export default function HorizontalScore({ checkKey, checks, label }: Score) {
@@ -40,7 +40,6 @@ export default function HorizontalScore({ checkKey, checks, label }: Score) {
   const level = Math.floor(formattedScore / 25)
 
   return (
-    // <div className="grid grid-cols-3 gap-x-4">
     <div className="flex flex-row gap-x-4">
       {label ? (
         <div className="text-gray-500 text-xs uppercase leading-none break-words font-semibold max-w-[115px] flex-1">

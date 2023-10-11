@@ -16,6 +16,14 @@ type Props = {
   target: string
 }
 
+const levels = {
+  0: 'stroke-red-500',
+  1: 'stroke-orange-400',
+  2: 'stroke-yellow-300',
+  3: 'stroke-green-400',
+  4: 'stroke-green-400'
+}
+
 export default function Project({ repo, target, nested }: Props) {
   let state: RepositoryInfoStatus & Excerpt & Details
   if (repo[target].state === 'loaded') {
@@ -47,6 +55,18 @@ export default function Project({ repo, target, nested }: Props) {
     )
   }
 
+  const external = e => {
+    e.stopPropagation()
+  }
+
+  const score = state.rating
+    ? state.rating * 10
+    : state.score
+    ? state.score * 10
+    : 0
+  const formattedScore = isNaN(score) || score < 0 ? 0 : score
+  const level = Math.floor(formattedScore / 25)
+
   const C = () => {
     return (
       <div className="w-full pb-4 bg-white rounded-2xl flex-col justify-start items-start gap-2 inline-flex overflow-hidden">
@@ -63,35 +83,38 @@ export default function Project({ repo, target, nested }: Props) {
             </div>
           </div>
           {nested && state.openGraphImageUrl ? (
-            <div className="overflow-hidden h-[50px] relative w-full mt-4">
+            <div className="overflow-hidden h-[50px] w-full mt-4 relative">
               <img
                 src={state.openGraphImageUrl}
                 alt={state.name}
                 className="absolute bottom-[-12px] transform origin-bottom"
               />
+              <div className="absolute bg-white right-0 w-16 h-full z-10" />
             </div>
           ) : null}
         </div>
         <div className="self-stretch flex-col justify-start items-start gap-3 flex pl-6 pr-8">
           <div className="justify-start items-center gap-1 inline-flex">
-            <div className="w-4 h-4 relative">
-              <img src="./icons/link.svg" />
-            </div>
-            <div className="justify-start items-baseline gap-2 flex">
-              <div className="text-[#3E238B] text-sm font-medium leading-tight">
-                <a
-                  href={`https://github.com/${state.organization}/${state.name}`}
-                >
+            <a
+              href={`https://github.com/${state.organization}/${state.name}`}
+              target="_blank"
+              className="justify-start items-center gap-1 inline-flex"
+              onClick={external}
+            >
+              <div className="w-4 h-4 relative">
+                <img src="./icons/link.svg" />
+              </div>
+              <div className="justify-start items-baseline gap-2 flex">
+                <div className="text-[#3E238B] text-sm font-medium leading-tight">
                   Github
-                </a>
-                {/* TODO get the org name from data  */}
+                </div>
               </div>
-              <div className="text-gray-400 text-xs font-normal leading-none italic">
-                Added{' '}
-                {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(
-                  new Date(state.createdAt)
-                )}
-              </div>
+            </a>
+            <div className="text-gray-400 text-xs font-normal leading-none italic">
+              Added{' '}
+              {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(
+                new Date(state.createdAt)
+              )}
             </div>
           </div>
           <div className="self-stretch text-gray-500 text-sm font-normal leading-tight">
@@ -116,7 +139,7 @@ export default function Project({ repo, target, nested }: Props) {
                   strokeDashoffset: 420 - 230 * ((state.rating || 0) / 10),
                   fill: 'none'
                 }}
-                className="stroke-green-400"
+                className={levels[level]}
                 d="M 30 90 A43 43 0 1 1 70 90"
               />
             </svg>

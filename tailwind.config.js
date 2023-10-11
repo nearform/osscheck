@@ -32,6 +32,7 @@ module.exports = {
         '2xl': '40rem',
         '3xl': '50rem',
         '5xl': '66rem',
+        '8xl': '90rem',
       },
       opacity: {
         1: '0.01',
